@@ -19,4 +19,21 @@
     
     <!-- Error Messages -->
     <string name="error_occurred">An error occurred: %1$s</string>
+    
+    <!-- Settings Features -->
+    <string name="settings">Settings</string>
+    <string name="font_size">Font Size</string>
+    <string name="font_size_title">Adjust Font Size</string>
+    <string name="preview_text">Preview</string>
+    <string name="preview_content">ਵਾਹਿਗੁਰੂ ਜੀ ਕਾ ਖਾਲਸਾ ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫਤਹਿ</string>
+    <string name="bani_order">Bani Order</string>
+    <string name="bani_order_title">Customize Bani Order</string>
+    <string name="bani_order_instructions">Drag and drop to reorder Banis</string>
+    <string name="reset_order">Reset to Default Order</string>
+    <string name="reset_order_title">Reset Order</string>
+    <string name="reset_order_message">Are you sure you want to reset the Bani order to default?</string>
+    <string name="reset">Reset</string>
+    <string name="cancel">Cancel</string>
+    <string name="order_reset">Order reset to default</string>
+    <string name="default_bani_title">Bani</string>
 </resources>

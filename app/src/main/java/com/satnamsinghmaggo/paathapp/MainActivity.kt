@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import com.satnamsinghmaggo.paathapp.adapter.BaniAdapter
 import com.satnamsinghmaggo.paathapp.model.Bani
+import com.satnamsinghmaggo.paathapp.util.BaniPreferenceManager
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: BaniAdapter
     private lateinit var toolbar: Toolbar
+    private lateinit var preferenceManager: BaniPreferenceManager
     private var banis: List<Bani> = emptyList()
 
     companion object {
@@ -34,6 +36,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        preferenceManager = BaniPreferenceManager.getInstance(this)
         initializeViews()
         setupToolbar()
         setupDrawer()
@@ -105,7 +108,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun loadBanis() {
-        banis = listOf(
+        // Try to load custom order from preferences
+        val customOrder = preferenceManager.getBaniOrder()
+        banis = if (customOrder != null) {
+            customOrder
+        } else {
+            // If no custom order exists, use default order
+            getDefaultBaniOrder()
+        }
+        adapter.updateBanis(banis)
+    }
+
+    private fun getDefaultBaniOrder(): List<Bani> {
+        return listOf(
             Bani("Japji Sahib", "Morning (3:00 AM - 6:00 AM)"),
             Bani("Jaap Sahib", "Morning (3:00 AM - 6:00 AM)"),
             Bani("Chaupai Sahib", "Morning"),
@@ -117,7 +132,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             Bani("Dukh Bhanjani Sahib", "Anytime"),
             Bani("Ardaas", "Anytime")
         )
-        adapter.updateBanis(banis)
     }
 
     private fun handleError(e: Exception) {
@@ -128,17 +142,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_home -> {
                 // Already on home
+                drawerLayout.closeDrawer(GravityCompat.START)
+                return true
             }
             R.id.nav_banis -> {
                 // Already showing banis
             }
             R.id.nav_settings -> {
-                // TODO: Open settings
-                Toast.makeText(this, "Settings coming soon", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this, SettingsActivity::class.java))
+                drawerLayout.closeDrawer(GravityCompat.START)
+                return true
             }
             R.id.nav_about -> {
-                // TODO: Open about
-                Toast.makeText(this, "About coming soon", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "About section coming soon", Toast.LENGTH_SHORT).show()
+                drawerLayout.closeDrawer(GravityCompat.START)
+                return true
             }
             R.id.nav_feedback -> {
                 try {
@@ -192,13 +210,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
         }
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
+        return false
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(KEY_BANIS, ArrayList(banis.map { it as android.os.Parcelable }))
+        outState.putParcelableArrayList(KEY_BANIS, ArrayList(banis))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Reload banis in case order was changed in settings
+        loadBanis()
     }
 
     override fun onDestroy() {

@@ -19,7 +19,6 @@ import java.util.concurrent.TimeUnit
 class BaniDetailActivity : AppCompatActivity(), AudioManager.OnAudioFocusChangeListener {
 
     private lateinit var tvBaniTitle: TextView
-    private lateinit var tvBaniTime: TextView
     private lateinit var btnPrevious: ImageButton
     private lateinit var btnPlayPause: ImageButton
     private lateinit var btnNext: ImageButton
@@ -34,11 +33,15 @@ class BaniDetailActivity : AppCompatActivity(), AudioManager.OnAudioFocusChangeL
     private val handler = Handler(Looper.getMainLooper())
     private val updateSeekBar = object : Runnable {
         override fun run() {
-            if (mediaPlayer.isPlaying) {
-                seekBar.progress = mediaPlayer.currentPosition
-                updateTimeDisplay()
+            if (::mediaPlayer.isInitialized && mediaPlayer.isPlaying && !isFinishing) {
+                if (::seekBar.isInitialized) {
+                    seekBar.progress = mediaPlayer.currentPosition
+                    updateTimeDisplay()
+                }
             }
-            handler.postDelayed(this, 1000)
+            if (!isFinishing) {
+                handler.postDelayed(this, 1000)
+            }
         }
     }
 
@@ -54,195 +57,229 @@ class BaniDetailActivity : AppCompatActivity(), AudioManager.OnAudioFocusChangeL
 
         try {
             initializeViews()
+            initializeAudioSystem()
             setupBaniDetails()
             setupMediaPlayer()
             setupMediaControls()
-            setupAudioFocus()
+
+            // Restore state if available
+            savedInstanceState?.let { bundle ->
+                val position = bundle.getInt(KEY_POSITION, 0)
+                val wasPlaying = bundle.getBoolean(KEY_IS_PLAYING, false)
+                if (::mediaPlayer.isInitialized) {
+                    mediaPlayer.seekTo(position)
+                    if (wasPlaying) playAudio()
+                }
+            }
         } catch (e: Exception) {
             handleError("Error initializing: ${e.message}")
+            finish() // Close the activity if initialization fails
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (isPlaying) {
+            pauseAudio()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        handler.removeCallbacks(updateSeekBar)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        try {
+            if (::mediaPlayer.isInitialized) {
+                if (mediaPlayer.isPlaying) {
+                    mediaPlayer.stop()
+                }
+                abandonAudioFocus()
+                mediaPlayer.release()
+            }
+            handler.removeCallbacks(updateSeekBar)
+        } catch (e: Exception) {
+            handleError("Error cleaning up: ${e.message}")
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if (::mediaPlayer.isInitialized) {
+            outState.putInt(KEY_POSITION, mediaPlayer.currentPosition)
+            outState.putBoolean(KEY_IS_PLAYING, isPlaying)
         }
     }
 
     private fun initializeViews() {
-        try {
-            tvBaniTitle = findViewById(R.id.tvBaniTitle)
-            tvBaniTime = findViewById(R.id.tvBaniTime)
-            btnPrevious = findViewById(R.id.btnPrevious)
-            btnPlayPause = findViewById(R.id.btnPlayPause)
-            btnNext = findViewById(R.id.btnNext)
-            seekBar = findViewById(R.id.seekBar)
-            tvCurrentTime = findViewById(R.id.tvCurrentTime)
-            tvTotalTime = findViewById(R.id.tvTotalTime)
-            audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        } catch (e: Exception) {
-            handleError("Error finding views: ${e.message}")
-        }
+        tvBaniTitle = findViewById(R.id.tvBaniTitle) ?: throw Exception("tvBaniTitle not found")
+        btnPrevious = findViewById(R.id.btnPrevious) ?: throw Exception("btnPrevious not found")
+        btnPlayPause = findViewById(R.id.btnPlayPause) ?: throw Exception("btnPlayPause not found")
+        btnNext = findViewById(R.id.btnNext) ?: throw Exception("btnNext not found")
+        seekBar = findViewById(R.id.seekBar) ?: throw Exception("seekBar not found")
+        tvCurrentTime = findViewById(R.id.tvCurrentTime) ?: throw Exception("tvCurrentTime not found")
+        tvTotalTime = findViewById(R.id.tvTotalTime) ?: throw Exception("tvTotalTime not found")
+    }
+
+    private fun initializeAudioSystem() {
+        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        setupAudioFocus()
     }
 
     private fun setupAudioFocus() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val audioAttributes = AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA)
-                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
                 .build()
 
             audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
                 .setAudioAttributes(audioAttributes)
-                .setAcceptsDelayedFocusGain(true)
                 .setOnAudioFocusChangeListener(this)
                 .build()
-
-            val result = audioManager.requestAudioFocus(audioFocusRequest!!)
-            if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                handleError("Could not get audio focus")
-            }
-        } else {
-            @Suppress("DEPRECATION")
-            val result = audioManager.requestAudioFocus(
-                this,
-                AudioManager.STREAM_MUSIC,
-                AudioManager.AUDIOFOCUS_GAIN
-            )
-            if (result != AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                handleError("Could not get audio focus")
-            }
         }
     }
 
     override fun onAudioFocusChange(focusChange: Int) {
         when (focusChange) {
-            AudioManager.AUDIOFOCUS_GAIN -> {
-                if (isPlaying) {
-                    mediaPlayer.setVolume(1.0f, 1.0f)
-                }
-            }
-            AudioManager.AUDIOFOCUS_LOSS -> {
-                if (isPlaying) {
-                    pauseAudio()
-                }
-            }
+            AudioManager.AUDIOFOCUS_LOSS,
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                if (isPlaying) {
-                    pauseAudio()
-                }
+                if (isPlaying) pauseAudio()
             }
-            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                if (isPlaying) {
-                    mediaPlayer.setVolume(0.1f, 0.1f)
-                }
+            AudioManager.AUDIOFOCUS_GAIN -> {
+                if (!isPlaying) playAudio()
             }
         }
     }
 
     private fun abandonAudioFocus() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            audioFocusRequest?.let {
-                audioManager.abandonAudioFocusRequest(it)
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                audioFocusRequest?.let { request ->
+                    audioManager.abandonAudioFocusRequest(request)
+                }
+            } else {
+                @Suppress("DEPRECATION")
+                audioManager.abandonAudioFocus(this)
             }
-        } else {
-            @Suppress("DEPRECATION")
-            audioManager.abandonAudioFocus(this)
+        } catch (e: Exception) {
+            handleError("Error abandoning audio focus: ${e.message}")
         }
     }
 
     private fun setupMediaPlayer() {
+        if (!::seekBar.isInitialized || !::tvTotalTime.isInitialized) {
+            throw Exception("Views not initialized")
+        }
+
         try {
-            mediaPlayer = MediaPlayer.create(this, R.raw.japji_sahib)
+            mediaPlayer = MediaPlayer.create(this, R.raw.japji_sahib) ?: 
+                throw Exception("Failed to create MediaPlayer")
+            
             mediaPlayer.setOnCompletionListener {
                 isPlaying = false
-                btnPlayPause.setImageResource(R.drawable.ic_play)
+                if (::btnPlayPause.isInitialized) {
+                    btnPlayPause.setImageResource(R.drawable.ic_play)
+                }
                 handler.removeCallbacks(updateSeekBar)
             }
-            seekBar.max = mediaPlayer.duration
-            tvTotalTime.text = formatTime(mediaPlayer.duration)
+
+            mediaPlayer.setOnPreparedListener { mp ->
+                seekBar.max = mp.duration
+                tvTotalTime.text = formatTime(mp.duration)
+            }
+
+            mediaPlayer.setOnErrorListener { _, _, _ ->
+                handleError("Media player error occurred")
+                true
+            }
+
         } catch (e: Exception) {
-            handleError("Error setting up media player: ${e.message}")
+            throw Exception("Error setting up media player: ${e.message}")
         }
     }
 
     private fun setupMediaControls() {
-        try {
-            btnPlayPause.setOnClickListener {
-                if (isPlaying) {
-                    pauseAudio()
-                } else {
-                    playAudio()
-                }
-            }
-
-            btnPrevious.setOnClickListener {
-                skipBackward()
-            }
-
-            btnNext.setOnClickListener {
-                skipForward()
-            }
-
-            seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                    if (fromUser) {
-                        mediaPlayer.seekTo(progress)
-                        updateTimeDisplay()
-                    }
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
-                override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-            })
-        } catch (e: Exception) {
-            handleError("Error setting up media controls: ${e.message}")
+        if (!::btnPlayPause.isInitialized || !::btnPrevious.isInitialized || 
+            !::btnNext.isInitialized || !::seekBar.isInitialized) {
+            throw Exception("Media control views not initialized")
         }
+
+        btnPlayPause.setOnClickListener {
+            if (isPlaying) pauseAudio() else playAudio()
+        }
+
+        btnPrevious.setOnClickListener {
+            skipBackward()
+        }
+
+        btnNext.setOnClickListener {
+            skipForward()
+        }
+
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser && ::mediaPlayer.isInitialized) {
+                    mediaPlayer.seekTo(progress)
+                    updateTimeDisplay()
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
     }
 
     private fun skipForward() {
+        if (!::mediaPlayer.isInitialized) return
         try {
-            val newPosition = mediaPlayer.currentPosition + SKIP_DURATION
-            if (newPosition <= mediaPlayer.duration) {
-                mediaPlayer.seekTo(newPosition)
-                seekBar.progress = newPosition
-                updateTimeDisplay()
-            } else {
-                // If we're at the end, just go to the end
-                mediaPlayer.seekTo(mediaPlayer.duration)
-                seekBar.progress = mediaPlayer.duration
-                updateTimeDisplay()
-            }
+            val newPosition = (mediaPlayer.currentPosition + SKIP_DURATION)
+                .coerceAtMost(mediaPlayer.duration)
+            mediaPlayer.seekTo(newPosition)
+            updateTimeDisplay()
         } catch (e: Exception) {
             handleError("Error skipping forward: ${e.message}")
         }
     }
 
     private fun skipBackward() {
+        if (!::mediaPlayer.isInitialized) return
         try {
-            val newPosition = mediaPlayer.currentPosition - SKIP_DURATION
-            if (newPosition >= 0) {
-                mediaPlayer.seekTo(newPosition)
-                seekBar.progress = newPosition
-                updateTimeDisplay()
-            } else {
-                // If we're at the beginning, just go to the start
-                mediaPlayer.seekTo(0)
-                seekBar.progress = 0
-                updateTimeDisplay()
-            }
+            val newPosition = (mediaPlayer.currentPosition - SKIP_DURATION)
+                .coerceAtLeast(0)
+            mediaPlayer.seekTo(newPosition)
+            updateTimeDisplay()
         } catch (e: Exception) {
             handleError("Error skipping backward: ${e.message}")
         }
     }
 
     private fun playAudio() {
+        if (!::mediaPlayer.isInitialized || !::btnPlayPause.isInitialized) {
+            handleError("Media player not initialized")
+            return
+        }
+
         try {
-            mediaPlayer.start()
-            isPlaying = true
-            btnPlayPause.setImageResource(R.drawable.ic_pause)
-            handler.post(updateSeekBar)
+            if (requestAudioFocus()) {
+                mediaPlayer.start()
+                isPlaying = true
+                btnPlayPause.setImageResource(R.drawable.ic_pause)
+                handler.post(updateSeekBar)
+            }
         } catch (e: Exception) {
             handleError("Error playing audio: ${e.message}")
         }
     }
 
     private fun pauseAudio() {
+        if (!::mediaPlayer.isInitialized || !::btnPlayPause.isInitialized) {
+            handleError("Media player not initialized")
+            return
+        }
+
         try {
             mediaPlayer.pause()
             isPlaying = false
@@ -254,6 +291,7 @@ class BaniDetailActivity : AppCompatActivity(), AudioManager.OnAudioFocusChangeL
     }
 
     private fun updateTimeDisplay() {
+        if (!::mediaPlayer.isInitialized || !::tvCurrentTime.isInitialized) return
         try {
             tvCurrentTime.text = formatTime(mediaPlayer.currentPosition)
         } catch (e: Exception) {
@@ -262,65 +300,47 @@ class BaniDetailActivity : AppCompatActivity(), AudioManager.OnAudioFocusChangeL
     }
 
     private fun formatTime(milliseconds: Int): String {
-        val minutes = TimeUnit.MILLISECONDS.toMinutes(milliseconds.toLong())
-        val seconds = TimeUnit.MILLISECONDS.toSeconds(milliseconds.toLong()) % 60
-        return String.format("%02d:%02d", minutes, seconds)
+        return try {
+            String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(milliseconds.toLong()),
+                TimeUnit.MILLISECONDS.toSeconds(milliseconds.toLong()) % 60
+            )
+        } catch (e: Exception) {
+            "00:00"
+        }
     }
 
     private fun setupBaniDetails() {
-        try {
-            val baniName = intent.getStringExtra("bani_name") ?: run {
-                handleError("No bani name provided")
-                return
-            }
-            tvBaniTitle.text = baniName
+        if (!::tvBaniTitle.isInitialized) {
+            throw Exception("Bani title view not initialized")
+        }
+        
+        val baniTitle = intent.getStringExtra("bani_name")
+        tvBaniTitle.text = baniTitle ?: getString(R.string.default_bani_title)
+    }
 
-            // Set the time based on bani name
-            val baniTime = when (baniName) {
-                "Japji Sahib" -> "Morning (3:00 AM - 6:00 AM)"
-                "Jaap Sahib" -> "Morning (3:00 AM - 6:00 AM)"
-                "Chaupai Sahib" -> "Morning"
-                "Anand Sahib" -> "Morning"
-                "Tav Prasad Savaiye" -> "Morning"
-                "Rehras Sahib" -> "Evening (6:00 PM)"
-                "Kirtan Sohila" -> "Night (Before Sleep)"
-                else -> "Anytime"
+    private fun requestAudioFocus(): Boolean {
+        return try {
+            val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                audioFocusRequest?.let { request ->
+                    audioManager.requestAudioFocus(request)
+                } ?: AudioManager.AUDIOFOCUS_REQUEST_FAILED
+            } else {
+                @Suppress("DEPRECATION")
+                audioManager.requestAudioFocus(
+                    this,
+                    AudioManager.STREAM_MUSIC,
+                    AudioManager.AUDIOFOCUS_GAIN
+                )
             }
-            tvBaniTime.text = baniTime
+            result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
         } catch (e: Exception) {
-            handleError("Error setting up bani details: ${e.message}")
+            handleError("Error requesting audio focus: ${e.message}")
+            false
         }
     }
 
     private fun handleError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt(KEY_POSITION, mediaPlayer.currentPosition)
-        outState.putBoolean(KEY_IS_PLAYING, isPlaying)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        val position = savedInstanceState.getInt(KEY_POSITION)
-        val wasPlaying = savedInstanceState.getBoolean(KEY_IS_PLAYING)
-        mediaPlayer.seekTo(position)
-        seekBar.progress = position
-        if (wasPlaying) {
-            playAudio()
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        try {
-            abandonAudioFocus()
-            mediaPlayer.release()
-            handler.removeCallbacks(updateSeekBar)
-        } catch (e: Exception) {
-            handleError("Error cleaning up: ${e.message}")
-        }
     }
 } 
