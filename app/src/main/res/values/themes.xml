@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.PaathApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.PaathApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/navy</item>
-        <item name="colorPrimaryVariant">@color/navy_light</item>
+        <item name="colorPrimaryContainer">@color/navy_light</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/kesari</item>
-        <item name="colorSecondaryVariant">@color/kesari_dark</item>
+        <item name="colorSecondaryContainer">@color/kesari_dark</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/navy</item>
         <!-- Background color -->
-        <item name="android:windowBackground">@color/kesari</item>
+        <item name="android:windowBackground">@color/white</item>
         <!-- Navigation view background -->
         <item name="navigationViewStyle">@style/Widget.PaathApp.NavigationView</item>
         <!-- Toolbar theme -->
         <item name="toolbarStyle">@style/Widget.PaathApp.Toolbar</item>
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:textColorSecondary">@color/gray</item>
     </style>
 
     <!-- NoActionBar variant for splash screen -->
-    <style name="Theme.PaathApp.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.PaathApp.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/white</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
