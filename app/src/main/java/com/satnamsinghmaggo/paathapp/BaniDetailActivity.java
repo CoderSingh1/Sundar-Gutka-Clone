@@ -1,195 +1,272 @@
+// Converted and updated Java code for BaniDetailActivity with dynamic audio playback support
+
 package com.satnamsinghmaggo.paathapp;
 
+import android.content.Context;
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import com.satnamsinghmaggo.paathapp.databinding.ActivityBaniDetailBinding;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
-public class BaniDetailActivity extends AppCompatActivity {
+public class BaniDetailActivity extends AppCompatActivity implements AudioManager.OnAudioFocusChangeListener {
 
-    private ActivityBaniDetailBinding binding;
-    private MediaPlayer mediaPlayer;
-    private final Handler handler = new Handler(Looper.getMainLooper());
-    private Runnable updateSeekBar;
+    private TextView tvBaniTitle, tvCurrentTime, tvTotalTime;
+    private ImageButton btnPrevious, btnPlayPause, btnNext;
+    private SeekBar seekBar;
+    private AudioManager audioManager;
+    private AudioFocusRequest audioFocusRequest;
     private boolean isPlaying = false;
-    private Bani bani;
+    private MediaPlayer mediaPlayer;
+    private Handler handler;
+
+    private static final int SKIP_DURATION = 5000;
+    private static final String KEY_POSITION = "position";
+    private static final String KEY_IS_PLAYING = "is_playing";
+
+    private final Runnable updateSeekBar = new Runnable() {
+        @Override
+        public void run() {
+            if (mediaPlayer != null && mediaPlayer.isPlaying() && !isFinishing()) {
+                seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                updateTimeDisplay();
+            }
+            if (!isFinishing()) {
+                handler.postDelayed(this, 1000);
+            }
+        }
+    };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityBaniDetailBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        setContentView(R.layout.activity_bani_detail);
 
-        bani = (Bani) getIntent().getSerializableExtra("bani");
-        if (bani == null) {
-            Toast.makeText(this, "Error loading Bani", Toast.LENGTH_SHORT).show();
+        handler = new Handler(Looper.getMainLooper());
+
+        try {
+            initializeViews();
+            initializeAudioSystem();
+            setupBaniDetails();
+            setupMediaPlayer();
+            setupMediaControls();
+
+            if (savedInstanceState != null) {
+                int position = savedInstanceState.getInt(KEY_POSITION, 0);
+                boolean wasPlaying = savedInstanceState.getBoolean(KEY_IS_PLAYING, false);
+                mediaPlayer.seekTo(position);
+                if (wasPlaying) playAudio();
+            }
+        } catch (Exception e) {
+            handleError("Error initializing: " + e.getMessage());
             finish();
+        }
+    }
+
+    private void setupBaniDetails() {
+        String baniTitle = getIntent().getStringExtra("bani_name");
+        tvBaniTitle.setText(baniTitle != null ? baniTitle : getString(R.string.default_bani_title));
+    }
+
+    private void setupMediaPlayer() {
+        String baniName = getIntent().getStringExtra("bani_name");
+        Integer audioResId = getAudioResIdForBani(baniName);
+
+        if (audioResId == null) {
+            handleError("Audio for '" + baniName + "' not available");
             return;
         }
 
-        setupToolbar();
-        setupViews();
-        setupFontSizeSpinner();
-        loadBaniContent();
+        mediaPlayer = MediaPlayer.create(this, audioResId);
+        if (mediaPlayer == null) {
+            handleError("Failed to create MediaPlayer");
+            return;
+        }
+
+        mediaPlayer.setOnPreparedListener(mp -> {
+            seekBar.setMax(mp.getDuration());
+            tvTotalTime.setText(formatTime(mp.getDuration()));
+        });
+
+        mediaPlayer.setOnCompletionListener(mp -> {
+            isPlaying = false;
+            btnPlayPause.setImageResource(R.drawable.ic_play);
+            handler.removeCallbacks(updateSeekBar);
+        });
+
+        mediaPlayer.setOnErrorListener((mp, what, extra) -> {
+            handleError("Media player error occurred");
+            return true;
+        });
     }
 
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(bani.getTitle());
+    private Integer getAudioResIdForBani(String baniName) {
+        if (baniName == null) return null;
+        switch (baniName.toLowerCase(Locale.ROOT)) {
+            case "japji sahib": return R.raw.japji_sahib;
+           // case "jaap sahib": return R.raw.jaap_sahib;
+           // case "rehras sahib": return R.raw.rehras_sahib;
+           // case "kirtan sohila": return R.raw.kirtan_sohila;
+            default: return null;
         }
     }
 
-    private void setupViews() {
-        binding.play.setOnClickListener(v -> togglePlayback());
-        binding.skipnext.setOnClickListener(v -> seekBy(5000));
-        binding.skipprev.setOnClickListener(v -> seekBy(-5000));
-        
-        binding.seekBar.setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(android.widget.SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser && mediaPlayer != null) {
+    private void initializeViews() {
+        tvBaniTitle = findViewById(R.id.BaniTitle);
+        btnPrevious = findViewById(R.id.btnPrevious);
+        btnPlayPause = findViewById(R.id.btnPlayPause);
+        btnNext = findViewById(R.id.btnNext);
+        seekBar = findViewById(R.id.seekBar);
+        tvCurrentTime = findViewById(R.id.tvCurrentTime);
+        tvTotalTime = findViewById(R.id.tvTotalTime);
+    }
+
+    private void initializeAudioSystem() {
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SPEECH)
+                    .build();
+
+            audioFocusRequest = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                    .setAudioAttributes(audioAttributes)
+                    .setOnAudioFocusChangeListener(this)
+                    .build();
+        }
+    }
+
+    private void setupMediaControls() {
+        btnPlayPause.setOnClickListener(v -> {
+            if (isPlaying) pauseAudio(); else playAudio();
+        });
+
+        btnPrevious.setOnClickListener(v -> skipBackward());
+        btnNext.setOnClickListener(v -> skipForward());
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
                     mediaPlayer.seekTo(progress);
+                    updateTimeDisplay();
                 }
             }
-            @Override
-            public void onStartTrackingTouch(android.widget.SeekBar seekBar) {}
-            @Override
-            public void onStopTrackingTouch(android.widget.SeekBar seekBar) {}
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
 
-    private void setupFontSizeSpinner() {
-        String[] fontSizes = {
-            getString(R.string.bani_font_size_small),
-            getString(R.string.bani_font_size_medium),
-            getString(R.string.bani_font_size_large)
-        };
-        
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, 
-            android.R.layout.simple_spinner_item, fontSizes);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        
-        binding.fontSizeSpinner.setAdapter(adapter);
-        binding.fontSizeSpinner.setSelection(1); // Default to medium
-        
-        binding.fontSizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                float textSize;
-                switch (position) {
-                    case 0: textSize = 16f; break; // Small
-                    case 1: textSize = 20f; break; // Medium
-                    default: textSize = 24f; break; // Large
-                }
-                binding.gurmukhiText.setTextSize(textSize);
-                binding.translationText.setTextSize(textSize);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
+    private void skipForward() {
+        int newPosition = Math.min(mediaPlayer.getCurrentPosition() + SKIP_DURATION, mediaPlayer.getDuration());
+        mediaPlayer.seekTo(newPosition);
+        updateTimeDisplay();
     }
 
-    private void loadBaniContent() {
-        binding.gurmukhiText.setText(bani.getContent());
-        binding.translationText.setText(bani.getDescription());
-        
-        // Initialize media player
-        try {
-            mediaPlayer = new MediaPlayer();
-            mediaPlayer.setDataSource(bani.getAudioUrl());
-            mediaPlayer.prepareAsync();
-            
-            mediaPlayer.setOnPreparedListener(mp -> {
-                binding.seekBar.setMax(mediaPlayer.getDuration());
-                updateSeekBar = new Runnable() {
-                    @Override
-                    public void run() {
-                        if (mediaPlayer != null && isPlaying) {
-                            binding.seekBar.setProgress(mediaPlayer.getCurrentPosition());
-                            handler.postDelayed(this, 1000);
-                        }
-                    }
-                };
-            });
-            
-            mediaPlayer.setOnCompletionListener(mp -> {
-                isPlaying = false;
-                binding.play.setImageResource(R.drawable.ic_play);
-                handler.removeCallbacks(updateSeekBar);
-            });
-        } catch (Exception e) {
-            Toast.makeText(this, "Error initializing audio player", Toast.LENGTH_SHORT).show();
+    private void skipBackward() {
+        int newPosition = Math.max(mediaPlayer.getCurrentPosition() - SKIP_DURATION, 0);
+        mediaPlayer.seekTo(newPosition);
+        updateTimeDisplay();
+    }
+
+    private void playAudio() {
+        if (requestAudioFocus()) {
+            mediaPlayer.start();
+            isPlaying = true;
+            btnPlayPause.setImageResource(R.drawable.ic_pause);
+            handler.post(updateSeekBar);
         }
     }
 
-    private void togglePlayback() {
-        if (mediaPlayer != null) {
-            if (!isPlaying) {
-                mediaPlayer.start();
-                isPlaying = true;
-                binding.play.setImageResource(R.drawable.ic_pause);
-                handler.post(updateSeekBar);
-            } else {
-                mediaPlayer.pause();
-                isPlaying = false;
-                binding.play.setImageResource(R.drawable.ic_play);
-                handler.removeCallbacks(updateSeekBar);
-            }
-        }
+    private void pauseAudio() {
+        mediaPlayer.pause();
+        isPlaying = false;
+        btnPlayPause.setImageResource(R.drawable.ic_play);
+        handler.removeCallbacks(updateSeekBar);
     }
 
-    private void seekBy(int milliseconds) {
-        if (mediaPlayer != null) {
-            int newPosition = Math.max(0, Math.min(
-                mediaPlayer.getCurrentPosition() + milliseconds,
-                mediaPlayer.getDuration()
-            ));
-            mediaPlayer.seekTo(newPosition);
+    private void updateTimeDisplay() {
+        tvCurrentTime.setText(formatTime(mediaPlayer.getCurrentPosition()));
+    }
+
+    private String formatTime(int milliseconds) {
+        return String.format(Locale.getDefault(), "%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(milliseconds),
+                TimeUnit.MILLISECONDS.toSeconds(milliseconds) % 60);
+    }
+
+    private boolean requestAudioFocus() {
+        int result;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && audioFocusRequest != null) {
+            result = audioManager.requestAudioFocus(audioFocusRequest);
+        } else {
+            result = audioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
         }
+        return result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED;
+    }
+
+    private void handleError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
+    public void onAudioFocusChange(int focusChange) {
+        if (focusChange == AudioManager.AUDIOFOCUS_LOSS || focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
+            if (isPlaying) pauseAudio();
+        } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+            if (!isPlaying) playAudio();
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mediaPlayer != null && isPlaying) {
-            mediaPlayer.pause();
-            isPlaying = false;
-            binding.play.setImageResource(R.drawable.ic_play);
-            handler.removeCallbacks(updateSeekBar);
-        }
+        if (isPlaying) pauseAudio();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacks(updateSeekBar);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) mediaPlayer.stop();
             mediaPlayer.release();
-            mediaPlayer = null;
+            abandonAudioFocus();
         }
-        if (updateSeekBar != null) {
-            handler.removeCallbacks(updateSeekBar);
+        handler.removeCallbacks(updateSeekBar);
+    }
+
+    private void abandonAudioFocus() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && audioFocusRequest != null) {
+            audioManager.abandonAudioFocusRequest(audioFocusRequest);
+        } else {
+            audioManager.abandonAudioFocus(this);
         }
     }
-} 
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mediaPlayer != null) {
+            outState.putInt(KEY_POSITION, mediaPlayer.getCurrentPosition());
+            outState.putBoolean(KEY_IS_PLAYING, isPlaying);
+        }
+    }
+}

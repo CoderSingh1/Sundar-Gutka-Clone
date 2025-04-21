@@ -1,10 +1,8 @@
-package com.satnamsinghmaggo.paathapp.util;
+package com.satnamsinghmaggo.paathapp.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.satnamsinghmaggo.paathapp.adapter.BaniOrderAdapter;
 
 public class BaniOrderTouchHelper extends ItemTouchHelper.Callback {
 
@@ -32,12 +30,12 @@ public class BaniOrderTouchHelper extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        // No swipe actions implemented
+        // Not implemented as we don't support swipe actions
     }
 
     @Override
     public boolean isLongPressDragEnabled() {
-        return false;
+        return true;
     }
 
     @Override

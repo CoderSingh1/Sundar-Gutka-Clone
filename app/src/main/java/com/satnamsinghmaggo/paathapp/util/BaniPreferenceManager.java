@@ -2,38 +2,54 @@ package com.satnamsinghmaggo.paathapp.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import androidx.preference.PreferenceManager;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.satnamsinghmaggo.paathapp.model.Bani;
+
+import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Set;
 
 public class BaniPreferenceManager {
-    private static final String PREF_NAME = "BaniPreferences";
+
     private static final String KEY_BANI_ORDER = "bani_order";
-    private static final String KEY_FONT_SIZE = "font_size";
-    
-    private final SharedPreferences preferences;
-    
-    public BaniPreferenceManager(Context context) {
-        preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    private final SharedPreferences sharedPreferences;
+    private final Gson gson;
+
+    private static volatile BaniPreferenceManager INSTANCE;
+
+    private BaniPreferenceManager(Context context) {
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        this.gson = new Gson();
     }
-    
-    public void saveBaniOrder(List<String> baniIds) {
-        Set<String> set = new HashSet<>(baniIds);
-        preferences.edit().putStringSet(KEY_BANI_ORDER, set).apply();
+
+    public static BaniPreferenceManager getInstance(Context context) {
+        if (INSTANCE == null) {
+            synchronized (BaniPreferenceManager.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new BaniPreferenceManager(context);
+                }
+            }
+        }
+        return INSTANCE;
     }
-    
-    public List<String> getBaniOrder() {
-        Set<String> set = preferences.getStringSet(KEY_BANI_ORDER, new HashSet<>());
-        return new ArrayList<>(set);
+
+    public void saveBaniOrder(List<Bani> banis) {
+        String json = gson.toJson(banis);
+        sharedPreferences.edit().putString(KEY_BANI_ORDER, json).apply();
     }
-    
-    public void saveFontSize(float size) {
-        preferences.edit().putFloat(KEY_FONT_SIZE, size).apply();
+
+    public List<Bani> getBaniOrder() {
+        String json = sharedPreferences.getString(KEY_BANI_ORDER, null);
+        if (json == null) return null;
+
+        try {
+            Type type = new TypeToken<List<Bani>>() {}.getType();
+            return gson.fromJson(json, type);
+        } catch (Exception e) {
+            sharedPreferences.edit().remove(KEY_BANI_ORDER).apply();
+            return null;
+        }
     }
-    
-    public float getFontSize() {
-        return preferences.getFloat(KEY_FONT_SIZE, 16f); // Default to 16sp
-    }
-} 
+}

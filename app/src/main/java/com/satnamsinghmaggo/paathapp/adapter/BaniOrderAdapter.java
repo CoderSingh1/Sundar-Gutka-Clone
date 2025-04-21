@@ -1,38 +1,48 @@
 package com.satnamsinghmaggo.paathapp.adapter;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.satnamsinghmaggo.paathapp.R;
-import com.satnamsinghmaggo.paathapp.util.BaniOrderTouchHelper;
-
+import com.satnamsinghmaggo.paathapp.databinding.ItemBaniOrderBinding;
+import com.satnamsinghmaggo.paathapp.model.Bani;
+import java.util.ArrayList;
 import java.util.List;
 
-public class BaniOrderAdapter extends RecyclerView.Adapter<BaniOrderAdapter.BaniViewHolder> implements BaniOrderTouchHelper.MoveListener {
+public class BaniOrderAdapter extends RecyclerView.Adapter<BaniOrderAdapter.BaniViewHolder> {
 
-    private List<String> banis;
-    private OnItemMoveListener moveListener;
+    private List<Bani> banis;
+    private final OnOrderChangedListener onOrderChanged;
 
-    public interface OnItemMoveListener {
-        void onItemMove(int fromPosition, int toPosition);
+    public interface OnOrderChangedListener {
+        void onOrderChanged(List<Bani> updatedList);
     }
 
-    public BaniOrderAdapter(List<String> banis, OnItemMoveListener moveListener) {
+    public BaniOrderAdapter(List<Bani> banis, OnOrderChangedListener listener) {
         this.banis = banis;
-        this.moveListener = moveListener;
+        this.onOrderChanged = listener;
+    }
+
+    public static class BaniViewHolder extends RecyclerView.ViewHolder {
+        private final ItemBaniOrderBinding binding;
+
+        public BaniViewHolder(ItemBaniOrderBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        public void bind(Bani bani) {
+            binding.baniName.setText(bani.getName());
+            binding.baniTime.setText(bani.getTime());
+        }
     }
 
     @NonNull
     @Override
     public BaniViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_bani_order, parent, false);
-        return new BaniViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        ItemBaniOrderBinding binding = ItemBaniOrderBinding.inflate(inflater, parent, false);
+        return new BaniViewHolder(binding);
     }
 
     @Override
@@ -45,33 +55,17 @@ public class BaniOrderAdapter extends RecyclerView.Adapter<BaniOrderAdapter.Bani
         return banis.size();
     }
 
-    @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        if (moveListener != null) {
-            moveListener.onItemMove(fromPosition, toPosition);
-            return true;
-        }
-        return false;
+    public void onItemMove(int fromPosition, int toPosition) {
+        List<Bani> updatedList = new ArrayList<>(banis);
+        Bani movedItem = updatedList.remove(fromPosition);
+        updatedList.add(toPosition, movedItem);
+        banis = updatedList;
+        notifyItemMoved(fromPosition, toPosition);
+        onOrderChanged.onOrderChanged(banis);
     }
 
-    public BaniOrderTouchHelper.MoveListener getMoveListener() {
-        return this;
+    public void updateList(List<Bani> newList) {
+        banis = newList;
+        notifyDataSetChanged();
     }
-
-    public List<String> getBaniIds() {
-        return banis;
-    }
-
-    static class BaniViewHolder extends RecyclerView.ViewHolder {
-        private final TextView baniName;
-
-        BaniViewHolder(@NonNull View itemView) {
-            super(itemView);
-            baniName = itemView.findViewById(R.id.bani_name);
-        }
-
-        void bind(String bani) {
-            baniName.setText(bani);
-        }
-    }
-} 
+}
