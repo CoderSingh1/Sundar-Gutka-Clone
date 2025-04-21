@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace 'com.satnamsinghmaggo.paathapp'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.satnamsinghmaggo.paathapp"
@@ -47,16 +47,22 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
     
     // Preferences
-    implementation 'androidx.preference:preference-ktx:1.2.1'
+    implementation libs.androidx.preference.ktx
     
     // JSON parsing
     implementation 'com.google.code.gson:gson:2.10.1'
     
     // Network
     implementation 'com.android.volley:volley:1.2.1'
+
+    implementation 'com.airbnb.android:lottie:6.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    implementation 'com.airbnb.android:lottie:6.4.0'
+    implementation 'org.jsoup:jsoup:1.15.4'
     
     // Testing
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
 } 
