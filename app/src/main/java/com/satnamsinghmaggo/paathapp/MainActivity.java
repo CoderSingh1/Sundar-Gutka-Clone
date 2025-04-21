@@ -62,8 +62,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // Already on home
         } else if (id == R.id.nav_banis) {
             // Already showing banis
+        } else if (id == R.id.nav_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_about) {
+
+        } else if (id == R.id.nav_feedback) {
+
+        } else if (id == R.id.nav_rate) {
+
+        } else if (id == R.id.nav_other_apps) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_youtube) {
+
         }
-        
+
         binding.drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
