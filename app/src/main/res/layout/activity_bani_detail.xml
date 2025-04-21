@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/kesari"
     android:padding="16dp">
 
     <androidx.appcompat.widget.Toolbar
@@ -34,6 +35,7 @@
                 android:id="@+id/BaniTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/navy"
                 android:textSize="20sp" />
 
             <TextView
@@ -41,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:textColor="@color/navy"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -51,6 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toTopOf="@+id/mediaControls"
         app:layout_constraintTop_toBottomOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold"/>
 
         <View
             android:layout_width="0dp"
@@ -73,30 +78,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="00:00"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/mediaControls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="@android:color/transparent"
         android:elevation="4dp"
         android:orientation="vertical"
         android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:thumbTint="@color/navy"
+            android:progressTint="@color/navy"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
-
 
 
             <ImageButton

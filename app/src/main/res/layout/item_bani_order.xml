@@ -6,11 +6,13 @@
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="4dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    app:cardElevation="2dp"
+    android:background="@color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:padding="16dp">
 
         <ImageView
@@ -29,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:textColor="@color/black"
+            android:textColor="@color/navy"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/baniTime"
