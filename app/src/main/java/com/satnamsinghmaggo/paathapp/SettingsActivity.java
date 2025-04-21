@@ -1,10 +1,9 @@
 package com.satnamsinghmaggo.paathapp;
 
 import android.os.Bundle;
-import android.view.MenuItem;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -15,44 +14,45 @@ import com.satnamsinghmaggo.paathapp.databinding.ActivitySettingsBinding;
 public class SettingsActivity extends AppCompatActivity {
 
     private ActivitySettingsBinding binding;
+    private ViewPager2 viewPager;
+    private TabLayout tabLayout;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setupToolbar();
-        setupViewPager();
-    }
-
-    private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        // Set up the toolbar
+        setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(R.string.settings_title);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-    }
 
-    private void setupViewPager() {
+        // Set up ViewPager2 with adapter
+        viewPager = binding.viewPager;
+        tabLayout = binding.tabLayout;
+
         SettingsPagerAdapter adapter = new SettingsPagerAdapter(this);
-        binding.viewPager.setAdapter(adapter);
+        viewPager.setAdapter(adapter);
 
-        new TabLayoutMediator(binding.tabLayout, binding.viewPager,
-                (tab, position) -> {
-                    if (position == 0) tab.setText("Font Size");
-                    else if (position == 1) tab.setText("Bani Order");
-                }
-        ).attach();
+        // Set up TabLayout with ViewPager2
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            switch (position) {
+                case 0:
+                    tab.setText("Font Size");
+                    break;
+                case 1:
+                    tab.setText("Bani Order");
+                    break;
+            }
+        }).attach();
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
-} 
+}
