@@ -101,9 +101,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setupRecyclerView() {
         adapter = new BaniAdapter(banis, bani -> {
             try {
-                Intent intent = new Intent(MainActivity.this, BaniDetailActivity.class);
-                intent.putExtra("bani_name", bani.getName());
-                startActivity(intent);
+                if (bani.getName().equalsIgnoreCase("Hukamnama")) {
+                    Intent intent = new Intent(MainActivity.this, HukamnamaActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, BaniDetailActivity.class);
+                    intent.putExtra("bani_name", bani.getName());
+                    startActivity(intent);
+                }
             } catch (Exception e) {
                 handleError(e);
             }
@@ -123,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private List<Bani> getDefaultBaniOrder() {
         return Arrays.asList(
+                new Bani("Hukamnama", "Daily Order from Sri Harmandir Sahib"),
                 new Bani("Japji Sahib", "Morning (3:00 AM - 6:00 AM)"),
                 new Bani("Jaap Sahib", "Morning (3:00 AM - 6:00 AM)"),
                 new Bani("Chaupai Sahib", "Morning"),

@@ -8,42 +8,45 @@
     android:background="?android:colorBackground"
     tools:context=".HukamnamaActivity">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="visible"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieLoader"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="Animation1.json"
+        app:lottie_loop="true"
+        app:lottie_renderMode="hardware" />
 
-    <Spinner
-        android:id="@+id/fontSizeSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_margin="16dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.core.widget.NestedScrollView
+
+    <ScrollView
         android:id="@+id/Scrollview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="6dp"
         app:layout_constraintBottom_toTopOf="@+id/seekBar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:layout_marginTop="20dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/Scrollview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/mainTitle1"
@@ -85,6 +88,8 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
+
+
             <TextView
                 android:id="@+id/gurmukhiText"
                 android:layout_width="match_parent"
@@ -112,6 +117,7 @@
                 android:textStyle="bold"
                 android:lineSpacingExtra="6dp"
                 android:textSize="18sp" />
+
 
             <TextView
                 android:id="@+id/punjabiTranslation"
@@ -169,8 +175,11 @@
                 android:lineSpacingExtra="6dp"
                 android:textSize="18sp" />
 
+
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+
+
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -180,32 +189,34 @@
         android:alpha="0"
         android:visibility="invisible"
         android:orientation="horizontal"
-        android:padding="12dp"
+        android:padding="23dp"
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+
+        >
 
         <ImageView
             android:id="@+id/skipprev"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_skip_previous" />
 
         <ImageView
             android:id="@+id/play"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:src="@drawable/ic_play" />
+            android:src="@drawable/ic_play"/>
 
         <ImageView
             android:id="@+id/skipnext"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_skip_next" />
@@ -219,10 +230,13 @@
         android:stepSize="1"
         android:alpha="0"
         android:background="@android:color/transparent"
-        android:thumbTint="?android:textColorPrimary"
-        android:progressTint="?android:textColorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:thumbTint="@color/light"
+        android:progressTint="@color/light"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout> 
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

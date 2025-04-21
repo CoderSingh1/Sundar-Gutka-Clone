@@ -111,6 +111,7 @@ public class BaniOrderFragment extends Fragment {
 
     private List<Bani> getDefaultBaniOrder() {
         List<Bani> defaultList = new ArrayList<>();
+        defaultList.add(new Bani("Hukamnama", "Daily Order from Sri Harmandir Sahib"));
         defaultList.add(new Bani("Japji Sahib", "Morning (3:00 AM - 6:00 AM)"));
         defaultList.add(new Bani("Jaap Sahib", "Morning (3:00 AM - 6:00 AM)"));
         defaultList.add(new Bani("Chaupai Sahib", "Morning"));
