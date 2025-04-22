@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
 
         // Delay the start of MainActivity
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+            startActivity(new Intent(SplashActivity.this, LanguageSelectionActivity.class));
             finish();
         }, SPLASH_DELAY);
     }

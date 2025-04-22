@@ -14,10 +14,12 @@ import java.util.List;
 public class BaniPreferenceManager {
 
     private static final String KEY_BANI_ORDER = "bani_order";
+    private static final String KEY_BANI_ORDER_PREFIX = "bani_order_";
     private final SharedPreferences sharedPreferences;
     private final Gson gson;
 
     private static volatile BaniPreferenceManager INSTANCE;
+
 
     private BaniPreferenceManager(Context context) {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
@@ -35,21 +37,25 @@ public class BaniPreferenceManager {
         return INSTANCE;
     }
 
-    public void saveBaniOrder(List<Bani> banis) {
+    public void saveBaniOrder(List<Bani> banis, String languageCode) {
         String json = gson.toJson(banis);
-        sharedPreferences.edit().putString(KEY_BANI_ORDER, json).apply();
+        sharedPreferences.edit().putString(getKeyForLang(languageCode), json).apply();
     }
 
-    public List<Bani> getBaniOrder() {
-        String json = sharedPreferences.getString(KEY_BANI_ORDER, null);
+    public List<Bani> getBaniOrder(String languageCode) {
+        String json = sharedPreferences.getString(getKeyForLang(languageCode), null);
         if (json == null) return null;
 
         try {
             Type type = new TypeToken<List<Bani>>() {}.getType();
             return gson.fromJson(json, type);
         } catch (Exception e) {
-            sharedPreferences.edit().remove(KEY_BANI_ORDER).apply();
+            sharedPreferences.edit().remove(getKeyForLang(languageCode)).apply();
             return null;
         }
+    }
+
+    private String getKeyForLang(String lang) {
+        return KEY_BANI_ORDER_PREFIX + lang;
     }
 }

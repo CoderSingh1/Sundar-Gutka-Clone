@@ -34,11 +34,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private BaniPreferenceManager preferenceManager;
     private List<Bani> banis = new ArrayList<>();
+    private String selectedLang = "en";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        selectedLang = getIntent().getStringExtra("selected_language");
+        if (selectedLang == null) selectedLang = "en";
+        Toast.makeText(this, "Selected Language: " + selectedLang, Toast.LENGTH_SHORT).show();
 
         preferenceManager = BaniPreferenceManager.getInstance(this);
         initializeViews();
@@ -117,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void loadBanis() {
-        List<Bani> customOrder = preferenceManager.getBaniOrder();
+        List<Bani> customOrder = preferenceManager.getBaniOrder(selectedLang);
         if (customOrder != null) {
             banis = customOrder;
         } else {
@@ -127,19 +132,50 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private List<Bani> getDefaultBaniOrder() {
-        return Arrays.asList(
-                new Bani("Hukamnama", "Daily Order from Sri Harmandir Sahib"),
-                new Bani("Japji Sahib", "Morning (3:00 AM - 6:00 AM)"),
-                new Bani("Jaap Sahib", "Morning (3:00 AM - 6:00 AM)"),
-                new Bani("Chaupai Sahib", "Morning"),
-                new Bani("Anand Sahib", "Morning"),
-                new Bani("Tav Prasad Savaiye", "Morning"),
-                new Bani("Rehras Sahib", "Evening (6:00 PM)"),
-                new Bani("Kirtan Sohila", "Night (Before Sleep)"),
-                new Bani("Sukhmani Sahib", "Anytime"),
-                new Bani("Dukh Bhanjani Sahib", "Anytime"),
-                new Bani("Ardaas", "Anytime")
-        );
+        if (selectedLang.equals("hi")) {
+            return Arrays.asList(
+                    new Bani("हुकमनामा", "हरमंदिर साहिब से दैनिक आदेश"),
+                    new Bani("जपजी साहिब", "सुबह (3:00 AM - 6:00 AM)"),
+                    new Bani("जाप साहिब", "सुबह (3:00 AM - 6:00 AM)"),
+                    new Bani("चौपाई साहिब", "सुबह"),
+                    new Bani("आनंद साहिब", "सुबह"),
+                    new Bani("ताव प्रसाद सवैये", "सुबह"),
+                    new Bani("रहिरास साहिब", "शाम (6:00 PM)"),
+                    new Bani("कीर्तन सोहिला", "रात (सोने से पहले)"),
+                    new Bani("सुखमनी साहिब", "कभी भी"),
+                    new Bani("दुख भंजनि साहिब", "कभी भी"),
+                    new Bani("अरदास", "कभी भी")
+            );
+        } else if (selectedLang.equals("pa")) {
+            return Arrays.asList(
+                    new Bani("ਹੁਕਮਨਾਮਾ", "ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਤੋਂ ਰੋਜ਼ਾਨਾ ਹੁਕਮ"),
+                    new Bani("ਜਪੁਜੀ ਸਾਹਿਬ", "ਸਵੇਰੇ (3:00 AM - 6:00 AM)"),
+                    new Bani("ਜਾਪ ਸਾਹਿਬ", "ਸਵੇਰੇ (3:00 AM - 6:00 AM)"),
+                    new Bani("ਚੌਪਈ ਸਾਹਿਬ", "ਸਵੇਰੇ"),
+                    new Bani("ਆਨੰਦ ਸਾਹਿਬ", "ਸਵੇਰੇ"),
+                    new Bani("ਤਾਵ ਪ੍ਰਸਾਦ ਸਵਯੇ", "ਸਵੇਰੇ"),
+                    new Bani("ਰਹਿਰਾਸ ਸਾਹਿਬ", "ਸ਼ਾਮ (6:00 PM)"),
+                    new Bani("ਕੀਰਤਨ ਸੋਹਿਲਾ", "ਰਾਤ (ਸੁੱਤੋਂ ਪਹਿਲਾਂ)"),
+                    new Bani("ਸੁਖਮਨੀ ਸਾਹਿਬ", "ਕਦੇ ਵੀ"),
+                    new Bani("ਦੁੱਖ ਭੰਜਨੀ ਸਾਹਿਬ", "ਕਦੇ ਵੀ"),
+                    new Bani("ਅਰਦਾਸ", "ਕਦੇ ਵੀ")
+            );
+        } else {
+            // English default
+            return Arrays.asList(
+                    new Bani("Hukamnama", "Daily Order from Sri Harmandir Sahib"),
+                    new Bani("Japji Sahib", "Morning (3:00 AM - 6:00 AM)"),
+                    new Bani("Jaap Sahib", "Morning (3:00 AM - 6:00 AM)"),
+                    new Bani("Chaupai Sahib", "Morning"),
+                    new Bani("Anand Sahib", "Morning"),
+                    new Bani("Tav Prasad Savaiye", "Morning"),
+                    new Bani("Rehras Sahib", "Evening (6:00 PM)"),
+                    new Bani("Kirtan Sohila", "Night (Before Sleep)"),
+                    new Bani("Sukhmani Sahib", "Anytime"),
+                    new Bani("Dukh Bhanjani Sahib", "Anytime"),
+                    new Bani("Ardaas", "Anytime")
+            );
+        }
     }
 
     private void handleError(Exception e) {
@@ -157,7 +193,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // Already on this page
                 return true;
             } else if (id == R.id.nav_settings) {
-                startActivity(new Intent(this, SettingsActivity.class));
+                Intent intent = new Intent(this, SettingsActivity.class);
+                intent.putExtra("selected_language", selectedLang); // pass the language
+                startActivity(intent);
                 return true;
             } else if (id == R.id.nav_about) {
                 Toast.makeText(this, "About section coming soon", Toast.LENGTH_SHORT).show();

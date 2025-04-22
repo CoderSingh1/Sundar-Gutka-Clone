@@ -10,8 +10,11 @@ import com.satnamsinghmaggo.paathapp.fragment.FontSizeFragment;
 
 public class SettingsPagerAdapter extends FragmentStateAdapter {
 
-    public SettingsPagerAdapter(@NonNull FragmentActivity activity) {
+    private final String selectedLang;
+
+    public SettingsPagerAdapter(@NonNull FragmentActivity activity, String selectedLang) {
         super(activity);
+        this.selectedLang = selectedLang;
     }
 
     @NonNull
@@ -21,7 +24,7 @@ public class SettingsPagerAdapter extends FragmentStateAdapter {
             case 0:
                 return new FontSizeFragment();
             case 1:
-                return new BaniOrderFragment();
+                return BaniOrderFragment.newInstance(selectedLang);
             default:
                 throw new IllegalArgumentException("Invalid position: " + position);
         }

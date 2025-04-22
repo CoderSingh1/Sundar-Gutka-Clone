@@ -34,8 +34,9 @@ public class SettingsActivity extends AppCompatActivity {
         viewPager = binding.viewPager;
         tabLayout = binding.tabLayout;
 
-        SettingsPagerAdapter adapter = new SettingsPagerAdapter(this);
-        viewPager.setAdapter(adapter);
+        String selectedLang = getIntent().getStringExtra("selected_language");
+        if (selectedLang == null) selectedLang = "en";
+        viewPager.setAdapter(new SettingsPagerAdapter(this, selectedLang));
 
         // Set up TabLayout with ViewPager2
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
