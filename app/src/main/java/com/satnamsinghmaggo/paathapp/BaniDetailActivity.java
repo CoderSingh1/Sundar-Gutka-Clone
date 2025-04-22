@@ -19,6 +19,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -78,8 +81,13 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
 
     private void setupBaniDetails() {
         String baniTitle = getIntent().getStringExtra("bani_name");
+        String filename = baniTitle + ".txt";
         tvBaniTitle.setText(baniTitle != null ? baniTitle : getString(R.string.default_bani_title));
+        if (baniTitle != null) {
 
+            String baniText = loadBaniFromAssets(filename);
+            BaniText.setText(baniText); // assuming tvBaniText is your TextView for the bani content
+        }
 
 
     }
@@ -135,6 +143,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
         seekBar = findViewById(R.id.seekBar);
         tvCurrentTime = findViewById(R.id.tvCurrentTime);
         tvTotalTime = findViewById(R.id.tvTotalTime);
+        BaniText = findViewById(R.id.BaniText);
     }
 
     private void initializeAudioSystem() {
@@ -271,5 +280,23 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
             outState.putInt(KEY_POSITION, mediaPlayer.getCurrentPosition());
             outState.putBoolean(KEY_IS_PLAYING, isPlaying);
         }
+    }
+    private String loadBaniFromAssets(String fileName) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(getAssets().open(fileName)))) {
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line).append("\n");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error loading bani", Toast.LENGTH_SHORT).show();
+        }
+
+        return stringBuilder.toString();
     }
 }
