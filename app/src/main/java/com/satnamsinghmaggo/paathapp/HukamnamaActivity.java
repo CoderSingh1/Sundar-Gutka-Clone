@@ -1,6 +1,7 @@
 package com.satnamsinghmaggo.paathapp;
 
 import android.animation.Animator;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -27,6 +28,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.preference.PreferenceManager;
 
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -60,13 +62,15 @@ public class HukamnamaActivity extends AppCompatActivity {
     private static final OkHttpClient client = new OkHttpClient();
     Spinner fontSizeSpinner;
     private TextView gurmukhiTitle, gurmukhiText, punjabiTranslation, punjabiText, englishTranslation, englishText, Maintitle1, MainTitle2, PunjabiDate, PunjabiAng, EnglishDate, EnglishAng, NormalDate;
+    private static final String KEY_FONT_SIZE = "font_size";
+    private static final float DEFAULT_FONT_SIZE = 16f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hukamnama);
         initViews();
-
+        applyFontSize();
         applyControlIconTint();
         setupLottieAnimation();
         applyWindowInsets();
@@ -158,6 +162,24 @@ public class HukamnamaActivity extends AppCompatActivity {
                 showToast("Error fetching PDF link");
             }
         }).start();
+    }
+    private void applyFontSize() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        float fontSize = prefs.getFloat(KEY_FONT_SIZE, DEFAULT_FONT_SIZE);
+        gurmukhiText.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        gurmukhiTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        punjabiText.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        punjabiTranslation.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        englishText.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        englishTranslation.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        Maintitle1.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        MainTitle2.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        PunjabiDate.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        PunjabiAng.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        EnglishDate.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        EnglishAng.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        NormalDate.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+
     }
 
     private void downloadAndDisplayPdf(String url) {
