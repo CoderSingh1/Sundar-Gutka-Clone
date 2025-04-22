@@ -1,6 +1,7 @@
 package com.satnamsinghmaggo.paathapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -250,6 +251,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
+            super.onResume();
+            if (adapter != null) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                float fontSize = prefs.getFloat("font_size", 16f);
+                adapter.setFontSize(fontSize);
+                adapter.notifyDataSetChanged();
+            }
+
         loadBanis(); // Reload in case order changed in Settings
     }
 

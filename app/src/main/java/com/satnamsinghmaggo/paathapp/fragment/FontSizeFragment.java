@@ -18,7 +18,7 @@ import com.satnamsinghmaggo.paathapp.R;
 public class FontSizeFragment extends Fragment {
 
     private static final String KEY_FONT_SIZE = "font_size";
-    private static final float DEFAULT_FONT_SIZE = 16f;
+    private static final float DEFAULT_FONT_SIZE =20f;
     private static final float MIN_FONT_SIZE = 12f;
     private static final float MAX_FONT_SIZE = 36f;
 

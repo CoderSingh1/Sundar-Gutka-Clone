@@ -17,6 +17,8 @@ public class BaniAdapter extends RecyclerView.Adapter<BaniAdapter.BaniViewHolder
     private List<Bani> banis;
     private final OnItemClickListener onItemClickListener;
 
+    private float fontSize = 16f;
+
     public interface OnItemClickListener {
         void onItemClick(Bani bani);
     }
@@ -26,6 +28,11 @@ public class BaniAdapter extends RecyclerView.Adapter<BaniAdapter.BaniViewHolder
         this.onItemClickListener = onItemClickListener;
     }
 
+    public void setFontSize(float fontSize) {
+        this.fontSize = fontSize;
+    }
+
+
     public static class BaniViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
         TextView tvTime;
@@ -34,6 +41,8 @@ public class BaniAdapter extends RecyclerView.Adapter<BaniAdapter.BaniViewHolder
             super(itemView);
             tvName = itemView.findViewById(R.id.tvBaniName);
             tvTime = itemView.findViewById(R.id.tvBaniTime);
+
+
         }
     }
 
@@ -50,6 +59,8 @@ public class BaniAdapter extends RecyclerView.Adapter<BaniAdapter.BaniViewHolder
         Bani bani = banis.get(position);
         holder.tvName.setText(bani.getName());
         holder.tvTime.setText(bani.getTime());
+        holder.tvName.setTextSize(fontSize); // 👈 Apply font size
+        holder.tvTime.setTextSize(fontSize - 2);
 
         holder.itemView.setOnClickListener(v -> onItemClickListener.onItemClick(bani));
     }
