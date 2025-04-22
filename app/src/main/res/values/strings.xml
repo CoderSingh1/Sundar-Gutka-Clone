@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Paath App</string>
-    
+
     <!-- Navigation Drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    
+
     <!-- Menu Items -->
     <string name="menu_home">Home</string>
     <string name="menu_banis">Banis</string>
@@ -17,10 +17,10 @@
     <string name="menu_other_apps">Other Apps</string>
     <string name="menu_share">Share App</string>
     <string name="menu_youtube">YouTube</string>
-    
+
     <!-- Error Messages -->
     <string name="error_occurred">An error occurred: %1$s</string>
-    
+
     <!-- Settings Features -->
     <string name="settings">Settings</string>
     <string name="font_size">Font Size</string>

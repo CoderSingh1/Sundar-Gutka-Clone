@@ -4,11 +4,11 @@
     <style name="Theme.PaathApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/navy</item>
-        <item name="colorPrimaryContainer">@color/navy_light</item>
+        <item name="colorPrimaryContainer">@color/navy</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/kesari</item>
-        <item name="colorSecondaryContainer">@color/kesari_dark</item>
+        <item name="colorSecondaryContainer">@color/kesari</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/navy</item>

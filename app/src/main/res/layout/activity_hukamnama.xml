@@ -193,30 +193,29 @@
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
-        >
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/skipprev"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_skip_previous" />
 
         <ImageView
             android:id="@+id/play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:clickable="true"
             android:focusable="true"
+            android:layout_marginHorizontal="16dp"
             android:src="@drawable/ic_play"/>
 
         <ImageView
             android:id="@+id/skipnext"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:clickable="true"
             android:focusable="true"
             android:src="@drawable/ic_skip_next" />
@@ -235,8 +234,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:thumbTint="@color/light"
         android:progressTint="@color/light"/>
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
