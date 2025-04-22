@@ -26,6 +26,7 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp"
         android:elevation="6dp"
+        android:background="@color/card_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -36,7 +37,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text=" ਪੰਜਾਬੀ "
-            android:textColor="?android:textColorPrimary"
+            android:textColor="@color/bani_text_primary"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -61,6 +62,7 @@
         android:layout_marginTop="136dp"
         app:cardCornerRadius="8dp"
         android:elevation="6dp"
+        android:background="@color/card_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/punjabiCV">
@@ -71,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:text=" हिंदी "
-                    android:textColor="?android:textColorPrimary"
+                    android:textColor="@color/bani_text_primary"
                     android:textSize="26sp"
                     android:textStyle="bold" />
 
@@ -94,6 +96,7 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp"
         android:elevation="6dp"
+        android:background="@color/card_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hindiCV">
@@ -104,7 +107,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text=" English"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="@color/bani_text_primary"
             android:textSize="26sp"
             android:textStyle="bold" />
 
