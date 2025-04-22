@@ -3,6 +3,7 @@
 package com.satnamsinghmaggo.paathapp;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
@@ -11,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.TypedValue;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,6 +42,8 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
     private static final int SKIP_DURATION = 5000;
     private static final String KEY_POSITION = "position";
     private static final String KEY_IS_PLAYING = "is_playing";
+    private static final String KEY_FONT_SIZE = "font_size";
+    private static final float DEFAULT_FONT_SIZE = 16f;
 
     private final Runnable updateSeekBar = new Runnable() {
         @Override
@@ -61,7 +66,9 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
         handler = new Handler(Looper.getMainLooper());
 
         try {
+
             initializeViews();
+            applyFontSize();
             initializeAudioSystem();
             setupBaniDetails();
             setupMediaPlayer();
@@ -77,6 +84,19 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
             handleError("Error initializing: " + e.getMessage());
             finish();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        applyFontSize();  // Re-apply in case user changed it in settings
+        if (isPlaying) handler.post(updateSeekBar); // continue seek bar update
+    }
+
+    private void applyFontSize() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        float fontSize = prefs.getFloat(KEY_FONT_SIZE, DEFAULT_FONT_SIZE);
+        BaniText.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
     }
 
     private void setupBaniDetails() {

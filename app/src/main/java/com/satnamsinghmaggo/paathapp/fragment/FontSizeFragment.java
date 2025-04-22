@@ -20,7 +20,7 @@ public class FontSizeFragment extends Fragment {
     private static final String KEY_FONT_SIZE = "font_size";
     private static final float DEFAULT_FONT_SIZE = 16f;
     private static final float MIN_FONT_SIZE = 12f;
-    private static final float MAX_FONT_SIZE = 24f;
+    private static final float MAX_FONT_SIZE = 36f;
 
     private SharedPreferences sharedPreferences;
     private SeekBar seekBar;
@@ -46,6 +46,8 @@ public class FontSizeFragment extends Fragment {
         previewText = view.findViewById(R.id.previewText);
         sizeText = view.findViewById(R.id.sizeText);
 
+
+        seekBar.setMax((int) ((MAX_FONT_SIZE - MIN_FONT_SIZE) * 10));
         setupSeekBar();
         updateFontSize();
     }
