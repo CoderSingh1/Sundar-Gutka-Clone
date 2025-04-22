@@ -82,6 +82,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
     private void setupBaniDetails() {
         String baniTitle = getIntent().getStringExtra("bani_name");
         String filename = baniTitle + ".txt";
+
         tvBaniTitle.setText(baniTitle != null ? baniTitle : getString(R.string.default_bani_title));
         if (baniTitle != null) {
 
@@ -282,6 +283,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
         }
     }
     private String loadBaniFromAssets(String fileName) {
+
         StringBuilder stringBuilder = new StringBuilder();
 
         try (BufferedReader reader = new BufferedReader(
