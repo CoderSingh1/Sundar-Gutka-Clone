@@ -26,7 +26,7 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp"
         android:elevation="6dp"
-        android:background="@color/card_background"
+        android:background="@color/light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -62,7 +62,7 @@
         android:layout_marginTop="136dp"
         app:cardCornerRadius="8dp"
         android:elevation="6dp"
-        android:background="@color/card_background"
+        android:background="@color/light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/punjabiCV">
@@ -96,7 +96,7 @@
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp"
         android:elevation="6dp"
-        android:background="@color/card_background"
+        android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hindiCV">

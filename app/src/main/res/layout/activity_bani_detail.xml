@@ -41,6 +41,7 @@
 
             <TextView
                 android:id="@+id/BaniTitle"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="?android:textColorPrimary"
@@ -50,6 +51,7 @@
                 android:id="@+id/BaniText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:layout_marginTop="16dp"
                 android:textColor="?android:textColorPrimary"
                 android:textSize="16sp" />
