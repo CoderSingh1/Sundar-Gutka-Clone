@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class BaniDetailActivity extends AppCompatActivity implements AudioManager.OnAudioFocusChangeListener {
 
-    private TextView tvBaniTitle, tvCurrentTime, tvTotalTime;
+    private TextView tvBaniTitle, tvCurrentTime, tvTotalTime,BaniText;
     private ImageButton btnPrevious, btnPlayPause, btnNext;
     private SeekBar seekBar;
     private AudioManager audioManager;
@@ -79,6 +79,9 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
     private void setupBaniDetails() {
         String baniTitle = getIntent().getStringExtra("bani_name");
         tvBaniTitle.setText(baniTitle != null ? baniTitle : getString(R.string.default_bani_title));
+
+
+
     }
 
     private void setupMediaPlayer() {
