@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
@@ -43,6 +44,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         selectedLang = getIntent().getStringExtra("selected_language");
         if (selectedLang == null) selectedLang = "en";
+
+// Persist language
+        PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putString("selected_language", selectedLang)
+                .apply();
         Toast.makeText(this, "Selected Language: " + selectedLang, Toast.LENGTH_SHORT).show();
 
         preferenceManager = BaniPreferenceManager.getInstance(this);
@@ -106,12 +113,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void setupRecyclerView() {
         adapter = new BaniAdapter(banis, bani -> {
             try {
-                if (bani.getName().equalsIgnoreCase("Hukamnama")) {
+                if (bani.getName().equalsIgnoreCase("Hukamnama") | bani.getName().equalsIgnoreCase("ਹੁਕਮਨਾਮਾ") | bani.getName().equalsIgnoreCase("हुकमनामा")) {
                     Intent intent = new Intent(MainActivity.this, HukamnamaActivity.class);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(MainActivity.this, BaniDetailActivity.class);
                     intent.putExtra("bani_name", bani.getName());
+                    intent.putExtra("selected_language", selectedLang);
                     startActivity(intent);
                 }
             } catch (Exception e) {
@@ -126,13 +134,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (customOrder != null) {
             banis = customOrder;
         } else {
-            banis = getDefaultBaniOrder();
+            banis = getDefaultBaniOrder(selectedLang);
         }
         adapter.updateBanis(banis);
     }
 
-    private List<Bani> getDefaultBaniOrder() {
-        if (selectedLang.equals("hi")) {
+    private List<Bani> getDefaultBaniOrder(String lang) {
+        if (lang.equals("hi")) {
             return Arrays.asList(
                     new Bani("हुकमनामा", "हरमंदिर साहिब से दैनिक आदेश"),
                     new Bani("जपजी साहिब", "सुबह (3:00 AM - 6:00 AM)"),

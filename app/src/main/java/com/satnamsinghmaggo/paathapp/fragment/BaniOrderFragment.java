@@ -50,6 +50,8 @@ public class BaniOrderFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        String selectedLang = getArguments() != null ? getArguments().getString("selected_language", "en") : "en";
+
         return inflater.inflate(R.layout.fragment_bani_order, container, false);
     }
 
@@ -60,8 +62,7 @@ public class BaniOrderFragment extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext());
         preferenceManager = BaniPreferenceManager.getInstance(requireContext());
-        String selectedLang = getArguments() != null ? getArguments().getString("selected_language", "en") : "en";
-
+        selectedLang = getArguments() != null ? getArguments().getString("selected_language", "en") : "en";
 
         recyclerView = view.findViewById(R.id.recyclerView);
         resetButton = view.findViewById(R.id.resetButton);
@@ -104,11 +105,13 @@ public class BaniOrderFragment extends Fragment {
     private void resetBaniOrder() {
         List<Bani> defaultOrder = getDefaultBaniOrder(selectedLang);
         adapter.updateList(defaultOrder);
-        preferenceManager.saveBaniOrder(defaultOrder,selectedLang );
+        String selectedLang = getArguments() != null ? getArguments().getString("selected_language", "en") : "en";
+        preferenceManager.saveBaniOrder(defaultOrder, selectedLang);
         Toast.makeText(requireContext(), R.string.order_reset, Toast.LENGTH_SHORT).show();
     }
 
     private void loadBaniOrder() {
+        String selectedLang = getArguments() != null ? getArguments().getString("selected_language", "en") : "en";
         List<Bani> savedBanis = preferenceManager.getBaniOrder(selectedLang);
         if (savedBanis != null) {
             banis.clear();

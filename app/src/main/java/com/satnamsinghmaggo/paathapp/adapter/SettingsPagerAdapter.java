@@ -1,8 +1,12 @@
 package com.satnamsinghmaggo.paathapp.adapter;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.satnamsinghmaggo.paathapp.fragment.BaniOrderFragment;
@@ -14,6 +18,7 @@ public class SettingsPagerAdapter extends FragmentStateAdapter {
 
     public SettingsPagerAdapter(@NonNull FragmentActivity activity, String selectedLang) {
         super(activity);
+
         this.selectedLang = selectedLang;
     }
 

@@ -1,9 +1,11 @@
 package com.satnamsinghmaggo.paathapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -34,8 +36,8 @@ public class SettingsActivity extends AppCompatActivity {
         viewPager = binding.viewPager;
         tabLayout = binding.tabLayout;
 
-        String selectedLang = getIntent().getStringExtra("selected_language");
-        if (selectedLang == null) selectedLang = "en";
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String selectedLang = prefs.getString("selected_language", "en");
         viewPager.setAdapter(new SettingsPagerAdapter(this, selectedLang));
 
         // Set up TabLayout with ViewPager2
