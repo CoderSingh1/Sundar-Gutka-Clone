@@ -18,7 +18,7 @@ public class LanguageSelectionActivity extends AppCompatActivity {
       CardView punjabiCV,hindiCV,englishCV;
 //    TextView textView;
 //    TextView punjabiTv;
-//    TextView hinndiTv;
+//    TextView hindiTv;
 //    TextView englishTv;
 //    Toolbar toolbar;
 

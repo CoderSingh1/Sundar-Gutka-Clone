@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:windowBackground"
     tools:context=".LanguageSelectionActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text=" ਪੰਜਾਬੀ "
-            android:textColor="@color/navy"
+            android:textColor="?android:textColorPrimary"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -70,7 +71,7 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:text=" हिंदी "
-                    android:textColor="@color/navy"
+                    android:textColor="?android:textColorPrimary"
                     android:textSize="26sp"
                     android:textStyle="bold" />
 
@@ -103,7 +104,7 @@
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text=" English"
-            android:textColor="@color/navy"
+            android:textColor="?android:textColorPrimary"
             android:textSize="26sp"
             android:textStyle="bold" />
 

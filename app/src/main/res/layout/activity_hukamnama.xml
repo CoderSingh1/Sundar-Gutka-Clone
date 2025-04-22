@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:colorBackground"
+    android:background="?android:windowBackground"
     tools:context=".HukamnamaActivity">
 
     <com.airbnb.lottie.LottieAnimationView
@@ -22,8 +22,6 @@
         app:lottie_fileName="Animation1.json"
         app:lottie_loop="true"
         app:lottie_renderMode="hardware" />
-
-
 
     <ScrollView
         android:id="@+id/Scrollview"
@@ -42,14 +40,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
             android:layout_marginTop="20dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/Scrollview"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/mainTitle1"
+            <TextView android:id="@+id/mainTitle1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -58,8 +51,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/mainTitle2"
+            <TextView android:id="@+id/mainTitle2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -68,8 +60,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/normalDate"
+            <TextView android:id="@+id/normalDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -78,8 +69,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/gurmukhiTitle"
+            <TextView android:id="@+id/gurmukhiTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -88,97 +78,90 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-
-
-            <TextView
-                android:id="@+id/gurmukhiText"
+            <TextView android:id="@+id/gurmukhiText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:lineSpacingExtra="6dp"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="?android:textColorPrimary" />
 
-            <TextView
-                android:id="@+id/punjabiDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="8dp"
-                android:textStyle="bold"
-                android:lineSpacingExtra="6dp"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/punjabiAng"
+            <TextView android:id="@+id/punjabiDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="8dp"
                 android:textStyle="bold"
                 android:lineSpacingExtra="6dp"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="?android:textColorPrimary" />
 
+            <TextView android:id="@+id/punjabiAng"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textStyle="bold"
+                android:lineSpacingExtra="6dp"
+                android:textSize="18sp"
+                android:textColor="?android:textColorPrimary" />
 
-            <TextView
-                android:id="@+id/punjabiTranslation"
+            <TextView android:id="@+id/punjabiTranslation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="12dp"
                 android:paddingTop="16dp"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="?android:textColorPrimary" />
 
-            <TextView
-                android:id="@+id/punjabiText"
+            <TextView android:id="@+id/punjabiText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:lineSpacingExtra="6dp"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="?android:textColorPrimary" />
 
-            <TextView
-                android:id="@+id/englishTranslation"
+            <TextView android:id="@+id/englishTranslation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="12dp"
                 android:paddingTop="16dp"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="?android:textColorPrimary" />
 
-            <TextView
-                android:id="@+id/englishText"
+            <TextView android:id="@+id/englishText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:lineSpacingExtra="6dp"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="?android:textColorPrimary" />
 
-            <TextView
-                android:id="@+id/englishDate"
+            <TextView android:id="@+id/englishDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="8dp"
                 android:textStyle="bold"
                 android:lineSpacingExtra="6dp"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="?android:textColorPrimary" />
 
-            <TextView
-                android:id="@+id/englishAng"
+            <TextView android:id="@+id/englishAng"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:padding="8dp"
                 android:textStyle="bold"
                 android:lineSpacingExtra="6dp"
-                android:textSize="18sp" />
-
-
+                android:textSize="18sp"
+                android:textColor="?android:textColorPrimary" />
         </LinearLayout>
-
-
     </ScrollView>
 
     <LinearLayout
@@ -232,8 +215,6 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:thumbTint="@color/light"
-        android:progressTint="@color/light"/>
-
-
+        android:thumbTint="?android:textColorPrimary"
+        android:progressTint="?android:textColorPrimary" />
 </androidx.constraintlayout.widget.ConstraintLayout>
