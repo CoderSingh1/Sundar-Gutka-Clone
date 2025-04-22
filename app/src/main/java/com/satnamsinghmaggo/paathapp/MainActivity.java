@@ -198,7 +198,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         try {
 
-            if (id == R.id.nav_home || id == R.id.nav_banis) {
+            if(id == R.id.nav_home){
+                Intent intent = new Intent(this, LanguageSelectionActivity.class);
+                startActivity(intent);
+                return true;
+            }
+
+            if (id == R.id.nav_banis) {
                 // Already on this page
                 return true;
             } else if (id == R.id.nav_settings) {
