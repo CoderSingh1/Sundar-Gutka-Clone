@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/navy"/>
+            android:textColor="?android:textColorPrimary"/>
 
         <TextView
             android:id="@+id/tvBaniTime"

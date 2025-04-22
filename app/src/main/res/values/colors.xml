@@ -14,4 +14,9 @@
     <color name="kesari">#FF9933</color>
     <color name="navy">#000080</color>
     <color name="light">#FFFFFF</color>
+
+    <!-- Custom dynamic colors -->
+    <color name="card_background">#FFFFFF</color>
+    <color name="bani_background">@color/kesari</color>
+    <color name="bani_text_primary">@color/navy</color>
 </resources>

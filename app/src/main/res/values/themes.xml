@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
     <style name="Theme.PaathApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
         <item name="colorPrimary">@color/navy</item>
         <item name="colorPrimaryContainer">@color/navy</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
+
         <item name="colorSecondary">@color/kesari</item>
         <item name="colorSecondaryContainer">@color/kesari</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/navy</item>
-        <!-- Background color -->
-        <item name="android:windowBackground">@color/white</item>
-        <!-- Navigation view background -->
-        <item name="navigationViewStyle">@style/Widget.PaathApp.NavigationView</item>
-        <!-- Toolbar theme -->
-        <item name="toolbarStyle">@style/Widget.PaathApp.Toolbar</item>
-        <!-- Text colors -->
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="android:textColorSecondary">@color/gray</item>
-    </style>
+        <item name="colorOnSecondary">@color/white</item>
 
-    <!-- NoActionBar variant for splash screen -->
-    <style name="Theme.PaathApp.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:windowBackground">@color/white</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/navy</item>
+        <item name="android:windowBackground">@color/kesari</item>
+
+        <item name="android:textColorPrimary">@color/navy</item>
+        <item name="android:textColorSecondary">@color/gray</item>
+
+        <item name="navigationViewStyle">@style/Widget.PaathApp.NavigationView</item>
+        <item name="toolbarStyle">@style/Widget.PaathApp.Toolbar</item>
     </style>
 
     <style name="Widget.PaathApp.NavigationView" parent="Widget.MaterialComponents.NavigationView">
@@ -41,4 +30,10 @@
         <item name="titleTextColor">@color/white</item>
         <item name="subtitleTextColor">@color/white</item>
     </style>
+
+    <style name="Theme.PaathApp.NoActionBar" parent="Theme.PaathApp">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 </resources>
