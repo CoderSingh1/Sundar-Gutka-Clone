@@ -133,7 +133,7 @@ public class BaniOrderFragment extends Fragment {
                 defaultList.add(new Bani("ਚੌਪਈ ਸਾਹਿਬ", "ਸਵੇਰ"));
                 defaultList.add(new Bani("ਆਨੰਦ ਸਾਹਿਬ", "ਸਵੇਰ"));
                 defaultList.add(new Bani("ਤਵ ਪ੍ਰਸਾਦ ਸਵੱਯੇ", "ਸਵੇਰ"));
-                defaultList.add(new Bani("ਰਿਹਰਾਸ ਸਾਹਿਬ", "ਸ਼ਾਮ (6:00 ਵਜੇ)"));
+                defaultList.add(new Bani("ਰਹਿਰਾਸ ਸਾਹਿਬ", "ਸ਼ਾਮ (6:00 ਵਜੇ)"));
                 defaultList.add(new Bani("ਕੀਰਤਨ ਸੋਹਿਲਾ", "ਰਾਤ (ਸੌਣ ਤੋਂ ਪਹਿਲਾਂ)"));
                 defaultList.add(new Bani("ਸੁਖਮਨੀ ਸਾਹਿਬ", "ਕਦੇ ਵੀ"));
                 defaultList.add(new Bani("ਦੁੱਖ ਭੰਜਨੀ ਸਾਹਿਬ", "ਕਦੇ ਵੀ"));
@@ -147,7 +147,7 @@ public class BaniOrderFragment extends Fragment {
                 defaultList.add(new Bani("चौपाई साहिब", "सुबह"));
                 defaultList.add(new Bani("आनंद साहिब", "सुबह"));
                 defaultList.add(new Bani("तव प्रसाद सवैये", "सुबह"));
-                defaultList.add(new Bani("रहरास साहिब", "शाम (6:00 PM)"));
+                defaultList.add(new Bani("रहिरास साहिब", "शाम (6:00 PM)"));
                 defaultList.add(new Bani("कीर्तन सोहिला", "रात (सोने से पहले)"));
                 defaultList.add(new Bani("सुखमनी साहिब", "कभी भी"));
                 defaultList.add(new Bani("दुख भंजन साहिब", "कभी भी"));
