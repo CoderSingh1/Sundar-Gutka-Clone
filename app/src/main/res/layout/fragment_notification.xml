@@ -2,16 +2,20 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="?android:windowBackground">
 
     <LinearLayout
         android:orientation="vertical"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView android:text="Morning Bani"
-            android:textSize="18sp"
-            android:layout_marginTop="16dp"
+        <TextView android:text="1. Morning Time Bani"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/bani_text_primary"
+            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <Button
@@ -20,9 +24,12 @@
             android:layout_height="wrap_content"
             android:text="Set Morning Time"/>
 
-        <TextView android:text="Evening Bani"
+        <TextView android:text="2. Evening Time Bani"
             android:textSize="18sp"
-            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/bani_text_primary"
+            android:layout_marginTop="14dp"
+            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <Button
@@ -31,9 +38,12 @@
             android:layout_height="wrap_content"
             android:text="Set Evening Time"/>
 
-        <TextView android:text="Night Bani"
+        <TextView android:text="3. Night Time Bani"
             android:textSize="18sp"
-            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/bani_text_primary"
+            android:layout_marginTop="14dp"
+            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <Button
@@ -45,12 +55,15 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="60dp"
             android:background="#ccc"/>
 
-        <TextView android:text="Custom Bani Reminders"
+        <TextView android:text="Custom Bani Time Reminders"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/bani_text_primary"
             android:layout_marginTop="24dp"
+            android:padding="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
