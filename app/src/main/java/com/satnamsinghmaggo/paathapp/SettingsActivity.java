@@ -49,6 +49,9 @@ public class SettingsActivity extends AppCompatActivity {
                 case 1:
                     tab.setText("Bani Order");
                     break;
+                case 2:
+                    tab.setText("Notifications");
+                    break;
             }
         }).attach();
     }

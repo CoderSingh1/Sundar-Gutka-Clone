@@ -11,6 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.satnamsinghmaggo.paathapp.fragment.BaniOrderFragment;
 import com.satnamsinghmaggo.paathapp.fragment.FontSizeFragment;
+import com.satnamsinghmaggo.paathapp.fragment.NotificationFragment;
 
 public class SettingsPagerAdapter extends FragmentStateAdapter {
 
@@ -30,6 +31,8 @@ public class SettingsPagerAdapter extends FragmentStateAdapter {
                 return new FontSizeFragment();
             case 1:
                 return BaniOrderFragment.newInstance(selectedLang);
+            case 2:
+                return new NotificationFragment();
             default:
                 throw new IllegalArgumentException("Invalid position: " + position);
         }
@@ -37,6 +40,6 @@ public class SettingsPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 3;
     }
 }
