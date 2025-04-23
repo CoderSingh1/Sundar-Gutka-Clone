@@ -38,9 +38,10 @@
             android:icon="@drawable/ic_youtube"
             android:title="@string/menu_youtube" />
         <item
-            android:id="@+id/nav_theme_toggle"
+            android:id="@+id/nav_dark_mode"
             android:title="Dark Mode"
-            android:icon="@drawable/ic_dark_mode" />
+            android:actionLayout="@layout/nav_switch_item"
+            android:icon="@drawable/ic_dark_mode"/>
 
     </group>
 </menu> 
