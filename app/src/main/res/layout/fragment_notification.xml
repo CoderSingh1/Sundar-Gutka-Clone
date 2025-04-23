@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView android:text="1. Morning Time Bani"
+        <TextView android:text="1. Morning Time Bani "
             android:textSize="22sp"
             android:textStyle="bold"
             android:textColor="@color/bani_text_primary"
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:text="Set Morning Time"/>
 
-        <TextView android:text="2. Evening Time Bani"
+        <TextView android:text="2. Evening Time Bani "
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/bani_text_primary"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:text="Set Evening Time"/>
 
-        <TextView android:text="3. Night Time Bani"
+        <TextView android:text="3. Night Time Bani "
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/bani_text_primary"
@@ -58,7 +58,7 @@
             android:layout_marginTop="60dp"
             android:background="#ccc"/>
 
-        <TextView android:text="Custom Bani Time Reminders"
+        <TextView android:text="Custom Bani Time Reminders "
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@color/bani_text_primary"
