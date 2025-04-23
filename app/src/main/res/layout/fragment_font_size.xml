@@ -21,8 +21,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:max="120"
-        android:progressTint="@color/navy"
-        android:thumbTint="@color/navy"/>
+        android:progressTint="?android:textColorPrimary"
+        android:thumbTint="?android:textColorPrimary" />
 
     <TextView
         android:id="@+id/sizeText"
