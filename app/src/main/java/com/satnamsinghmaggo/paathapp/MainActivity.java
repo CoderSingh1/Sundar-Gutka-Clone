@@ -1,16 +1,23 @@
 package com.satnamsinghmaggo.paathapp;
 
+import static java.security.AccessController.getContext;
+
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
 import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -44,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+
 
         selectedLang = getIntent().getStringExtra("selected_language");
         if (selectedLang == null) selectedLang = "en";
@@ -57,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toast.makeText(this, "Selected Language: " + selectedLang, Toast.LENGTH_SHORT).show();
 
         preferenceManager = BaniPreferenceManager.getInstance(this);
+
         initializeViews();
+        createNotificationChannel();
         setupToolbar();
         setupDrawer();
         setupRecyclerView();
@@ -69,6 +78,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             banis = savedInstanceState.getParcelableArrayList(KEY_BANIS);
             if (banis == null) banis = new ArrayList<>();
             adapter.updateBanis(banis);
+        }
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "bani_reminders",
+                    "Bani Reminders",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            channel.setDescription("Channel for Bani reminder notifications");
+
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
+            }
         }
     }
 
