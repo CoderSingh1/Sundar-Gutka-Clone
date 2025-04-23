@@ -127,14 +127,5 @@
 
     </androidx.cardview.widget.CardView>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:menu="@menu/drawer_menu" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
