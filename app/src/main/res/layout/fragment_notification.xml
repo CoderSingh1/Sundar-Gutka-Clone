@@ -25,13 +25,14 @@
         <Switch
             android:id="@+id/switchEnableReminders"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:cardElevation="6dp"
+        app:cardElevation="6dp"
         app:cardCornerRadius="12dp"
         android:padding="12dp"
         android:background="@color/card_background"

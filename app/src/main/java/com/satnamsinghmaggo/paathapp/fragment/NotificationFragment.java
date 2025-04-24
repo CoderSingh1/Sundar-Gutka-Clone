@@ -12,7 +12,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,10 +48,10 @@ public class NotificationFragment extends Fragment {
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btnMorning = view.findViewById(R.id.btnMorning);
-        btnEvening = view.findViewById(R.id.btnEvening);
-        btnNight = view.findViewById(R.id.btnNight);
-       // btnAddCustom = view.findViewById(R.id.btnAddCustomReminder);
+//        btnMorning = view.findViewById(R.id.btnMorning);
+//        btnEvening = view.findViewById(R.id.btnEvening);
+//        btnNight = view.findViewById(R.id.btnNight);
+//        btnAddCustom = view.findViewById(R.id.btnAddCustomReminder);
 
         // Request notification permission and create channel
         requestNotificationPermission();
@@ -70,6 +69,7 @@ public class NotificationFragment extends Fragment {
         btnMorning.setOnClickListener(v -> showTimePicker("morning"));
         btnEvening.setOnClickListener(v -> showTimePicker("evening"));
         btnNight.setOnClickListener(v -> showTimePicker("night"));
+        btnAddCustom.setOnClickListener(v -> showTimePicker("custom"));
     }
 
     private void showTimePicker(String type) {
@@ -94,7 +94,10 @@ public class NotificationFragment extends Fragment {
                     baniName = "Kirtan Sohila";
                     btnNight.setText("Set: " + time);
                     break;
-
+                case "custom":
+                    baniName = "Custom Bani";
+                    btnAddCustom.setText("Custom: " + time);
+                    break;
             }
 
             setReminder(baniName, selectedHour, selectedMinute);
@@ -136,27 +139,10 @@ public class NotificationFragment extends Fragment {
 
     @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
     private void scheduleDailyNotification(Context context, int hour, int minute, int requestCode, String title, String message) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-        if (alarmManager == null) return;
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            if (!alarmManager.canScheduleExactAlarms()) {
-                // Request permission from the user
-                Intent intent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                startActivity(intent);
-                Toast.makeText(context, "Please allow exact alarm permission for reminders to work correctly", Toast.LENGTH_LONG).show();
-                return;
-            }
-        }
-
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-
-
 
         if (calendar.before(Calendar.getInstance())) {
             calendar.add(Calendar.DATE, 1);
@@ -169,6 +155,7 @@ public class NotificationFragment extends Fragment {
                 context, requestCode, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         if (alarmManager != null) {
             alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         }

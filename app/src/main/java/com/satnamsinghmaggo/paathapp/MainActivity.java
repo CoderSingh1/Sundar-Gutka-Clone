@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem themeItem = menu.findItem(R.id.nav_dark_mode);
         if (themeItem != null) {
             if (isDarkModeEnabled()) {
-                themeItem.setIcon(R.drawable.ic_dark_mode);
+                themeItem.setIcon(R.drawable.mode_night);
             } else {
                 themeItem.setIcon(R.drawable.light_mode);
             }
