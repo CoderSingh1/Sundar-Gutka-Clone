@@ -1,5 +1,6 @@
 package com.satnamsinghmaggo.paathapp;
 
+import static com.satnamsinghmaggo.paathapp.ThemeHelper.isDarkModeEnabled;
 import static java.security.AccessController.getContext;
 
 import android.app.AlarmManager;
@@ -12,12 +13,17 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -49,7 +55,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ThemeHelper.applyTheme(this);
         setContentView(R.layout.activity_main);
+
+
+        NavigationView navView = findViewById(R.id.nav_view);
+        MenuItem darkModeItem = navView.getMenu().findItem(R.id.nav_dark_mode);
+
+// Wait until the NavigationView is fully laid out
+        navView.post(() -> {
+            View actionView = darkModeItem.getActionView();
+            if (actionView == null) {
+                Log.e("MainActivity", "actionView is null for dark mode item.");
+                return;
+            }
+
+            SwitchCompat switchCompat = actionView.findViewById(R.id.dark_mode_switch);
+            switchCompat.setChecked(isDarkModeEnabled(this)); // your own function
+            switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                toggleDarkMode(isChecked); // your own implementation
+            });
+        });
+
 
 
 
@@ -79,6 +106,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (banis == null) banis = new ArrayList<>();
             adapter.updateBanis(banis);
         }
+    }
+
+    private void toggleDarkMode(boolean isChecked) {
+        if (isChecked) {
+            ThemeHelper.setUserTheme(this, "dark");
+        } else {
+            ThemeHelper.setUserTheme(this, "light");
+        }
+        recreate(); // optional: apply immediately
     }
 
     private void createNotificationChannel() {
