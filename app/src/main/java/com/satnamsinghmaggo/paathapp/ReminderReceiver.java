@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -12,7 +13,9 @@ import androidx.core.app.NotificationManagerCompat;
 public class ReminderReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        String message = intent.getStringExtra("bani_name");
+        Log.d("ReminderReceiver", "Alarm triggered!");
+        String title = intent.getStringExtra("title");
+        String message = intent.getStringExtra("message");
 
         Intent openAppIntent = new Intent(context, LanguageSelectionActivity.class); // Change if you want another Activity
         openAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -22,7 +25,7 @@ public class ReminderReceiver extends BroadcastReceiver {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "bani_reminders")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "daily_channel")
                 .setSmallIcon(R.drawable.icon) // Replace with your icon
                 .setContentTitle("Paath Reminder")
                 .setContentText(message)
