@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -339,9 +340,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem themeItem = menu.findItem(R.id.nav_dark_mode);
         if (themeItem != null) {
             if (isDarkModeEnabled()) {
-                themeItem.setIcon(R.drawable.mode_night);
-            } else {
                 themeItem.setIcon(R.drawable.light_mode);
+                themeItem.setTitle("Light Mode");
+            } else {
+                themeItem.setIcon(R.drawable.mode_night);
+                themeItem.setTitle("Dark Mode");
             }
         }
 
