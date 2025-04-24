@@ -26,8 +26,8 @@
         android:id="@+id/punjabiCV"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="8dp"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="16dp"
         android:elevation="6dp"
         android:background="@color/light"
         app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
             android:layout_marginTop="60dp"
             android:text=" ਪਾਠ ਪੰਜਾਬੀ ਵਿੱਚ "
             android:textStyle="bold"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:padding="8dp"
             android:textColor="@android:color/darker_gray"/>
 
@@ -61,9 +61,9 @@
         android:id="@+id/hindiCV"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_margin="8dp"
+        android:layout_margin="12dp"
         android:layout_marginTop="136dp"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="16dp"
         android:elevation="6dp"
         android:background="@color/light"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +87,7 @@
                     android:layout_marginTop="60dp"
                     android:text=" पाठ हिंदी में "
                     android:textStyle="bold"
-                    android:textSize="14sp"
+                    android:textSize="18sp"
                     android:padding="8dp"
                     android:textColor="@android:color/darker_gray"/>
     </androidx.cardview.widget.CardView>
@@ -96,8 +96,8 @@
         android:id="@+id/englishCV"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_margin="8dp"
-        app:cardCornerRadius="8dp"
+        android:layout_margin="12dp"
+        app:cardCornerRadius="16dp"
         android:elevation="6dp"
         android:background="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -122,7 +122,7 @@
             android:padding="8dp"
             android:text=" Paath in English "
             android:textColor="@android:color/darker_gray"
-            android:textSize="14sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
