@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -55,6 +56,15 @@ public class NotificationFragment extends Fragment {
         // Request notification permission and create channel
         requestNotificationPermission();
         createNotificationChannel();
+
+        SharedPreferences prefs = requireContext().getSharedPreferences("paath_prefs", Context.MODE_PRIVATE);
+        boolean defaultSet = prefs.getBoolean("default_alarms_set", false);
+        if (!defaultSet) {
+            setReminder("Japji Sahib", 7, 0);
+            setReminder("Rehras Sahib", 17, 0);
+            setReminder("Kirtan Sohila", 21, 30);
+            prefs.edit().putBoolean("default_alarms_set", true).apply();
+        }
 
         btnMorning.setOnClickListener(v -> showTimePicker("morning"));
         btnEvening.setOnClickListener(v -> showTimePicker("evening"));
