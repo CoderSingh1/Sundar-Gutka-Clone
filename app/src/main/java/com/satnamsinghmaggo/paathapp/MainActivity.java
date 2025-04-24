@@ -1,29 +1,25 @@
 package com.satnamsinghmaggo.paathapp;
 
-import static com.satnamsinghmaggo.paathapp.ThemeHelper.isDarkModeEnabled;
-import static java.security.AccessController.getContext;
 
-import android.app.AlarmManager;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
+
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.CompoundButton;
+
 import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -55,27 +51,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ThemeHelper.applyTheme(this);
         setContentView(R.layout.activity_main);
-
-
-        NavigationView navView = findViewById(R.id.nav_view);
-        MenuItem darkModeItem = navView.getMenu().findItem(R.id.nav_dark_mode);
-
-// Wait until the NavigationView is fully laid out
-        navView.post(() -> {
-            View actionView = darkModeItem.getActionView();
-            if (actionView == null) {
-                Log.e("MainActivity", "actionView is null for dark mode item.");
-                return;
-            }
-
-            SwitchCompat switchCompat = actionView.findViewById(R.id.dark_mode_switch);
-            switchCompat.setChecked(isDarkModeEnabled(this)); // your own function
-            switchCompat.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                toggleDarkMode(isChecked); // your own implementation
-            });
-        });
+        updateThemeIcon();
 
 
 
@@ -108,14 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void toggleDarkMode(boolean isChecked) {
-        if (isChecked) {
-            ThemeHelper.setUserTheme(this, "dark");
-        } else {
-            ThemeHelper.setUserTheme(this, "light");
-        }
-        recreate(); // optional: apply immediately
-    }
+
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -139,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView = findViewById(R.id.recyclerView);
         toolbar = findViewById(R.id.toolbar);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     private void setupToolbar() {
@@ -271,7 +242,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (id == R.id.nav_banis) {
                 // Already on this page
                 return true;
-            } else if (id == R.id.nav_settings) {
+            }
+            else if (id == R.id.nav_settings) {
                 Intent intent = new Intent(this, SettingsActivity.class);
                 intent.putExtra("selected_language", selectedLang); // pass the language
                 startActivity(intent);
@@ -290,6 +262,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             } else if (id == R.id.nav_youtube) {
                 openUrl("https://www.youtube.com/Nitnem%20Path");
+                return true;
+            }
+            else if (id == R.id.nav_dark_mode) {
+                toggleTheme();
                 return true;
             }
 
@@ -336,5 +312,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onDestroy() {
         super.onDestroy();
         // Clean up if needed
+    }
+    private void toggleTheme() {
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        SharedPreferences prefs = getSharedPreferences("theme_prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        if (currentNightMode == Configuration.UI_MODE_NIGHT_YES) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            editor.putInt("theme_mode", AppCompatDelegate.MODE_NIGHT_NO);
+            Toast.makeText(this, "Light Mode On ☀", Toast.LENGTH_SHORT).show();
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            editor.putInt("theme_mode", AppCompatDelegate.MODE_NIGHT_YES);
+            Toast.makeText(this, "Dark Mode On 🌙", Toast.LENGTH_SHORT).show();
+        }
+
+        editor.apply();
+        recreate(); // recreate activity to apply theme change
+    }
+
+
+    private void updateThemeIcon() {
+        NavigationView navView = findViewById(R.id.nav_view);
+        Menu menu = navView.getMenu();
+        MenuItem themeItem = menu.findItem(R.id.nav_dark_mode);
+        if (themeItem != null) {
+            if (isDarkModeEnabled()) {
+                themeItem.setIcon(R.drawable.ic_dark_mode);
+            } else {
+                themeItem.setIcon(R.drawable.light_mode);
+            }
+        }
+
+    }
+
+    private boolean isDarkModeEnabled() {
+        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES;
     }
 }
