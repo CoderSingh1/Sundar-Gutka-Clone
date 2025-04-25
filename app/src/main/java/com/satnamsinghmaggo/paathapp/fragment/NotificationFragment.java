@@ -77,7 +77,14 @@ public class NotificationFragment extends Fragment {
 
         requestNotificationPermission();
       //  createNotificationChannel();
-        scheduleDailyNotification(requireContext(), 17, 49, 100, "Daily Reminder", "This is a daily reminder");
+        if (canScheduleExactAlarms()) {
+            scheduleDailyNotification(requireContext(), 17, 49, 100, "Daily Reminder", "This is a daily reminder");
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                startActivity(intent);
+            }
+        }
 
         tvTime.setOnClickListener(v -> showTimePickerDialog());
 
@@ -136,12 +143,16 @@ public class NotificationFragment extends Fragment {
             return;
         }
 
-        // Generate a unique request code
         int requestCode = (int) System.currentTimeMillis();
 
         if (switchReminder.isChecked()) {
-            scheduleDailyNotification(requireContext(), hour, minute, requestCode, title, "Reminder: " + title);
-            Toast.makeText(getContext(), "Reminder Set", Toast.LENGTH_SHORT).show();
+            if (canScheduleExactAlarms()) {
+                scheduleDailyNotification(requireContext(), hour, minute, requestCode, title, "Reminder: " + title);
+                Toast.makeText(getContext(), "Reminder Set", Toast.LENGTH_SHORT).show();
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                startActivity(intent);
+            }
         }
 
         Reminder reminder = new Reminder(title, time, switchReminder.isChecked(), requestCode);
@@ -270,10 +281,16 @@ public class NotificationFragment extends Fragment {
             int hour = getHour(reminder.time);
             int minute = getMinute(reminder.time);
             if (isChecked) {
-                scheduleDailyNotification(requireContext(), hour, minute, reminder.requestCode, reminder.title, "Reminder: " + reminder.title);
+                if (canScheduleExactAlarms()) {
+                    scheduleDailyNotification(requireContext(), hour, minute, reminder.requestCode, reminder.title, "Reminder: " + reminder.title);
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                    startActivity(intent);
+                }
             } else {
                 cancelReminder(reminder.requestCode);
             }
+
             saveReminders();
         });
 
@@ -285,6 +302,14 @@ public class NotificationFragment extends Fragment {
         });
 
         reminderContainer.addView(reminderView);
+    }
+
+    private boolean canScheduleExactAlarms() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            AlarmManager alarmManager = (AlarmManager) requireContext().getSystemService(Context.ALARM_SERVICE);
+            return alarmManager.canScheduleExactAlarms();
+        }
+        return true;
     }
 
 
