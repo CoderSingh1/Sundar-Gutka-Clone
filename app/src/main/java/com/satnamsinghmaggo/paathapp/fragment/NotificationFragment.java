@@ -143,6 +143,9 @@ public class NotificationFragment extends Fragment {
             return;
         }
 
+
+
+
         int requestCode = (int) System.currentTimeMillis();
 
         if (switchReminder.isChecked()) {
@@ -158,6 +161,24 @@ public class NotificationFragment extends Fragment {
         Reminder reminder = new Reminder(title, time, switchReminder.isChecked(), requestCode);
         reminderList.add(reminder);
         saveReminders();
+
+        switchReminder.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            reminder.isEnabled = isChecked;
+            int hour1 = getHour(reminder.time);
+            int minute1 = getMinute(reminder.time);
+            if (isChecked) {
+                if (canScheduleExactAlarms()) {
+                    scheduleDailyNotification(requireContext(), hour1, minute1, reminder.requestCode, reminder.title, "Reminder: " + reminder.title);
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                    startActivity(intent);
+                }
+            } else {
+                cancelReminder(reminder.requestCode);
+            }
+            saveReminders();
+        });
+
 
         btnDelete.setOnClickListener(v -> {
             reminderContainer.removeView(reminderView);
@@ -297,7 +318,15 @@ public class NotificationFragment extends Fragment {
         btnDelete.setOnClickListener(v -> {
             reminderContainer.removeView(reminderView);
             cancelReminder(reminder.requestCode);
-            reminderList.remove(reminder);
+
+            // Remove by matching requestCode instead of object reference
+            for (int i = 0; i < reminderList.size(); i++) {
+                if (reminderList.get(i).requestCode == reminder.requestCode) {
+                    reminderList.remove(i);
+                    break;
+                }
+            }
+
             saveReminders();
         });
 
