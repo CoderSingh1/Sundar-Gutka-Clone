@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
@@ -16,6 +17,12 @@ public class ReminderReceiver extends BroadcastReceiver {
         Log.d("ReminderReceiver", "Alarm triggered!");
         String title = intent.getStringExtra("title");
         String message = intent.getStringExtra("message");
+
+        PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        PowerManager.WakeLock wakeLock = powerManager.newWakeLock(
+                PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP | PowerManager.ON_AFTER_RELEASE,
+                "PaathApp:ReminderWakeLock"
+        );
 
         Intent openAppIntent = new Intent(context, LanguageSelectionActivity.class); // Change if you want another Activity
         openAppIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -29,6 +36,9 @@ public class ReminderReceiver extends BroadcastReceiver {
                 .setSmallIcon(R.drawable.icon) // Replace with your icon
                 .setContentTitle("Paath Reminder")
                 .setContentText(message)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true); // dismiss when clicked
