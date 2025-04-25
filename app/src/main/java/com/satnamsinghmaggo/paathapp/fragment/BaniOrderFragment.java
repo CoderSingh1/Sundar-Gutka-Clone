@@ -142,7 +142,7 @@ public class BaniOrderFragment extends Fragment {
 
             case "hi":  // Hindi
                 defaultList.add(new Bani("हुकमनामा", "श्री हरमंदिर साहिब से दैनिक आदेश"));
-                defaultList.add(new Bani("जपुजी साहिब", "सुबह (3:00 AM - 6:00 AM)"));
+                defaultList.add(new Bani("जपजी साहिब", "सुबह (3:00 AM - 6:00 AM)"));
                 defaultList.add(new Bani("जाप साहिब", "सुबह (3:00 AM - 6:00 AM)"));
                 defaultList.add(new Bani("चौपाई साहिब", "सुबह"));
                 defaultList.add(new Bani("आनंद साहिब", "सुबह"));
@@ -150,7 +150,7 @@ public class BaniOrderFragment extends Fragment {
                 defaultList.add(new Bani("रहिरास साहिब", "शाम (6:00 PM)"));
                 defaultList.add(new Bani("कीर्तन सोहिला", "रात (सोने से पहले)"));
                 defaultList.add(new Bani("सुखमनी साहिब", "कभी भी"));
-                defaultList.add(new Bani("दुख भंजन साहिब", "कभी भी"));
+                defaultList.add(new Bani("दुख भंजनि साहिब", "कभी भी"));
                 defaultList.add(new Bani("अरदास", "कभी भी"));
                 break;
 
