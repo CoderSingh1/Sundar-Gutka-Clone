@@ -8,7 +8,6 @@
     android:layout_margin="12dp">
 
 
-
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +15,6 @@
         app:cardCornerRadius="12dp"
         android:padding="12dp"
         android:background="@color/card_background"
-        android:foreground="?attr/selectableItemBackground"
         android:clickable="true"
         android:focusable="true"
         android:radius="12dp">
@@ -44,8 +42,7 @@
                 android:textColor="@color/bani_text_primary"
                 android:textStyle="bold"
                 android:padding="10dp"
-                android:layout_margin="8dp"
-                android:background="@android:drawable/edit_text" />
+                android:layout_margin="8dp"/>
 
             <TextView
                 android:id="@+id/tvTime"
