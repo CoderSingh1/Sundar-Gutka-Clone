@@ -236,6 +236,7 @@ public class HukamnamaActivity extends AppCompatActivity {
 
     private void initializeMediaPlayer(String audioUrl) {
         mediaPlayer = new MediaPlayer();
+        playButton.setEnabled(false);
         try {
             mediaPlayer.setDataSource(audioUrl);
             mediaPlayer.prepareAsync();
@@ -247,6 +248,7 @@ public class HukamnamaActivity extends AppCompatActivity {
 
         mediaPlayer.setOnPreparedListener(mp -> {
             seekBar.setMax(mp.getDuration());
+            playButton.setEnabled(true);
             updateSeekBar = new Runnable() {
                 @Override
                 public void run() {
