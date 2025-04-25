@@ -212,7 +212,7 @@ public class NotificationFragment extends Fragment {
     @RequiresPermission(Manifest.permission.SCHEDULE_EXACT_ALARM)
     private void scheduleDailyNotification(Context context, int hour, int minute, int requestCode, String title, String message) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("daily_channel", "Daily Notifications", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("daily_channel", "Daily Notifications", NotificationManager.IMPORTANCE_HIGH);
             NotificationManager manager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
             manager.createNotificationChannel(channel);
         }
