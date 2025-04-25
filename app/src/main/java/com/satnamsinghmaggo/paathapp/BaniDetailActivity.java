@@ -148,7 +148,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
     private Integer getAudioResIdForBani(String baniName) {
         if (baniName == null) return null;
         switch (baniName.toLowerCase(Locale.ROOT)) {
-            case "japji sahib": return R.raw.japji_sahib;
+            case "japji sahib","ਜਪੁਜੀ ਸਾਹਿਬ","जपजी साहिब": return R.raw.japji_sahib;
            // case "jaap sahib": return R.raw.jaap_sahib;
            // case "rehras sahib": return R.raw.rehras_sahib;
            // case "kirtan sohila": return R.raw.kirtan_sohila;
