@@ -1,21 +1,57 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# --- GENERAL RULES ---
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Preserve class and method names used in XML (like onClick methods)
+-keepclassmembers class * {
+    public void *(android.view.View);
+}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Keep annotations (required for modern Android SDKs)
+-keepattributes *Annotation*
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Keep line numbers for better crash logs
+-keepattributes SourceFile,LineNumberTable
+
+# Keep Application class (if any custom one is used)
+# -keep class com.satnamsinghmaggo.paathapp.MyApplication { *; }
+
+# --- LOTTIE (Animation) ---
+-keep class com.airbnb.lottie.** { *; }
+
+# --- GSON (JSON Parsing) ---
+-keep class com.google.gson.** { *; }
+-keepattributes Signature
+-keepattributes *Annotation*
+-keepclassmembers class * {
+    @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# --- VOLLEY (Networking) ---
+-keep class com.android.volley.** { *; }
+
+# --- OKHTTP3 (Networking) ---
+-dontwarn okhttp3.**
+-keep class okhttp3.** { *; }
+
+# --- JSOUP (HTML Parsing) ---
+-dontwarn org.jsoup.**
+-keep class org.jsoup.** { *; }
+
+# --- ANDROIDX (Jetpack Components) ---
+-keep class androidx.** { *; }
+-dontwarn androidx.**
+
+# --- FILE PROVIDER ---
+-keep public class androidx.core.content.FileProvider {
+    public *;
+}
+
+# --- OPTIONAL DEBUGGING RULES ---
+# Uncomment if you want to keep method/field names for debugging
+# -keepnames class * {
+#     *;
+# }
+
+# --- TESTING CLASSES (optional) ---
+# If you use any test-specific classes, you can exclude them like:
+# -dontwarn junit.**
+
