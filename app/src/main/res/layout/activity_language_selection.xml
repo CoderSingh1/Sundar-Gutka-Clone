@@ -112,7 +112,7 @@
             android:text=" English"
             android:textColor="@color/bani_text_primary"
             android:textSize="26sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/englidhtv2"

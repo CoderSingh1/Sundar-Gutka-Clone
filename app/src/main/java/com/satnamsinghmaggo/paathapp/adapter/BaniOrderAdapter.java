@@ -33,7 +33,6 @@ public class BaniOrderAdapter extends RecyclerView.Adapter<BaniOrderAdapter.Bani
 
         public void bind(Bani bani) {
             binding.baniName.setText(bani.getName());
-            binding.baniTime.setText(bani.getTime());
         }
     }
 
