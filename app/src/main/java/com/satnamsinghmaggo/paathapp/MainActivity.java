@@ -253,7 +253,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "About section coming soon", Toast.LENGTH_SHORT).show();
                 return true;
             } else if (id == R.id.nav_feedback || id == R.id.nav_rate) {
-                openUrl("https://play.google.com/store/apps/details?id=com.smartsolution.nitnempathpro&hl=en-US");
+                Intent intent = new Intent(this, FeedbackActivity.class);
+                startActivity(intent);
                 return true;
             } else if (id == R.id.nav_other_apps) {
                 openUrl("https://play.google.com/store/apps/developer?id=Smart+Solutions+IT&hl=en-US");
