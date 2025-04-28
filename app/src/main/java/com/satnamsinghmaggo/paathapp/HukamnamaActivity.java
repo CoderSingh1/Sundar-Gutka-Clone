@@ -84,10 +84,10 @@ public class HukamnamaActivity extends AppCompatActivity {
         // pdfView = findViewById(R.id.pdfview);
         lottieLoader = findViewById(R.id.lottieLoader);
         seekBar = findViewById(R.id.seekBar);
-        playButton = findViewById(R.id.play);
-        skipNext = findViewById(R.id.skipnext);
-        skipPrev = findViewById(R.id.skipprev);
-        mediaPlayerLayout = findViewById(R.id.linearLayout1);
+        playButton = findViewById(R.id.btnPlayPause);
+        skipNext = findViewById(R.id.btnNext);
+        skipPrev = findViewById(R.id.btnPrevious);
+        mediaPlayerLayout = findViewById(R.id.mediaControls);
         gurmukhiTitle = findViewById(R.id.gurmukhiTitle);
         gurmukhiText = findViewById(R.id.gurmukhiText);
         punjabiTranslation = findViewById(R.id.punjabiTranslation);
