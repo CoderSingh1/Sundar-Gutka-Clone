@@ -249,9 +249,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else if (id == R.id.nav_about) {
                 Toast.makeText(this, "About section coming soon", Toast.LENGTH_SHORT).show();
                 return true;
-            } else if (id == R.id.nav_feedback || id == R.id.nav_rate) {
+            } else if (id == R.id.nav_feedback ) {
                openUrl("https://forms.gle/rcow4cE1Nmvcr4FR8");
                 return true;
+            } else if (id ==R.id.nav_rate) {
+                openUrl("https://play.google.com/store/apps/details?id=com.smartsolution.nitnempathpro");
+                return true;
+
+
             } else if (id == R.id.nav_other_apps) {
                 openUrl("https://play.google.com/store/apps/developer?id=Smart+Solutions+IT&hl=en-US");
                 return true;
