@@ -5,16 +5,15 @@ import android.os.Parcelable;
 
 public class Bani implements Parcelable {
     private String name;
-    private String time;
 
-    public Bani(String name, String time) {
+
+    public Bani(String name) {
         this.name = name;
-        this.time = time;
+
     }
 
     protected Bani(Parcel in) {
         name = in.readString();
-        time = in.readString();
     }
 
     public static final Creator<Bani> CREATOR = new Creator<Bani>() {
@@ -33,14 +32,10 @@ public class Bani implements Parcelable {
         return name;
     }
 
-    public String getTime() {
-        return time;
-    }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
-        dest.writeString(time);
     }
 
     @Override

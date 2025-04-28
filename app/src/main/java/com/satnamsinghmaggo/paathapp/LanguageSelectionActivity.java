@@ -3,6 +3,7 @@ package com.satnamsinghmaggo.paathapp;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
@@ -39,8 +41,10 @@ public class LanguageSelectionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+
+      //  EdgeToEdge.enable(this);
         setContentView(R.layout.activity_language_selection);
         punjabiCV = findViewById(R.id.punjabiCV);
         hindiCV = findViewById(R.id.hindiCV);

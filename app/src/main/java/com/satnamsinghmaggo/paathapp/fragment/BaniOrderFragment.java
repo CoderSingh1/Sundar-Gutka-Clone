@@ -127,45 +127,45 @@ public class BaniOrderFragment extends Fragment {
 
         switch (lang) {
             case "pa":  // Punjabi
-                defaultList.add(new Bani("ਹੁਕਮਨਾਮਾ", "ਸ੍ਰੀ ਹਰਿਮੰਦਰ ਸਾਹਿਬ ਤੋਂ ਰੋਜ਼ਾਨਾ ਹੁਕਮ"));
-                defaultList.add(new Bani("ਜਪੁਜੀ ਸਾਹਿਬ", "ਸਵੇਰ (3:00 ਵਜੇ - 6:00 ਵਜੇ)"));
-                defaultList.add(new Bani("ਜਾਪ ਸਾਹਿਬ", "ਸਵੇਰ (3:00 ਵਜੇ - 6:00 ਵਜੇ)"));
-                defaultList.add(new Bani("ਚੌਪਈ ਸਾਹਿਬ", "ਸਵੇਰ"));
-                defaultList.add(new Bani("ਆਨੰਦ ਸਾਹਿਬ", "ਸਵੇਰ"));
-                defaultList.add(new Bani("ਤਵ ਪ੍ਰਸਾਦ ਸਵੱਯੇ", "ਸਵੇਰ"));
-                defaultList.add(new Bani("ਰਹਿਰਾਸ ਸਾਹਿਬ", "ਸ਼ਾਮ (6:00 ਵਜੇ)"));
-                defaultList.add(new Bani("ਕੀਰਤਨ ਸੋਹਿਲਾ", "ਰਾਤ (ਸੌਣ ਤੋਂ ਪਹਿਲਾਂ)"));
-                defaultList.add(new Bani("ਸੁਖਮਨੀ ਸਾਹਿਬ", "ਕਦੇ ਵੀ"));
-                defaultList.add(new Bani("ਦੁੱਖ ਭੰਜਨੀ ਸਾਹਿਬ", "ਕਦੇ ਵੀ"));
-                defaultList.add(new Bani("ਅਰਦਾਸ", "ਕਦੇ ਵੀ"));
+                defaultList.add(new Bani("ਹੁਕਮਨਾਮਾ"));
+                defaultList.add(new Bani("ਜਪੁਜੀ ਸਾਹਿਬ"));
+                defaultList.add(new Bani("ਜਾਪ ਸਾਹਿਬ"));
+                defaultList.add(new Bani("ਚੌਪਈ ਸਾਹਿਬ"));
+                defaultList.add(new Bani("ਆਨੰਦ ਸਾਹਿਬ"));
+                defaultList.add(new Bani("ਤਵ ਪ੍ਰਸਾਦ ਸਵੱਯੇ"));
+                defaultList.add(new Bani("ਰਹਿਰਾਸ ਸਾਹਿਬ"));
+                defaultList.add(new Bani("ਕੀਰਤਨ ਸੋਹਿਲਾ"));
+                defaultList.add(new Bani("ਸੁਖਮਨੀ ਸਾਹਿਬ"));
+                defaultList.add(new Bani("ਦੁੱਖ ਭੰਜਨੀ ਸਾਹਿਬ"));
+                defaultList.add(new Bani("ਅਰਦਾਸ"));
                 break;
 
             case "hi":  // Hindi
-                defaultList.add(new Bani("हुकमनामा", "श्री हरमंदिर साहिब से दैनिक आदेश"));
-                defaultList.add(new Bani("जपजी साहिब", "सुबह (3:00 AM - 6:00 AM)"));
-                defaultList.add(new Bani("जाप साहिब", "सुबह (3:00 AM - 6:00 AM)"));
-                defaultList.add(new Bani("चौपाई साहिब", "सुबह"));
-                defaultList.add(new Bani("आनंद साहिब", "सुबह"));
-                defaultList.add(new Bani("तव प्रसाद सवैये", "सुबह"));
-                defaultList.add(new Bani("रहिरास साहिब", "शाम (6:00 PM)"));
-                defaultList.add(new Bani("कीर्तन सोहिला", "रात (सोने से पहले)"));
-                defaultList.add(new Bani("सुखमनी साहिब", "कभी भी"));
-                defaultList.add(new Bani("दुख भंजनि साहिब", "कभी भी"));
-                defaultList.add(new Bani("अरदास", "कभी भी"));
+                defaultList.add(new Bani("हुकमनामा"));
+                defaultList.add(new Bani("जपजी साहिब"));
+                defaultList.add(new Bani("जाप साहिब"));
+                defaultList.add(new Bani("चौपाई साहिब"));
+                defaultList.add(new Bani("आनंद साहिब"));
+                defaultList.add(new Bani("तव प्रसाद सवैये"));
+                defaultList.add(new Bani("रहिरास साहिब"));
+                defaultList.add(new Bani("कीर्तन सोहिला"));
+                defaultList.add(new Bani("सुखमनी साहिब"));
+                defaultList.add(new Bani("दुख भंजनि साहिब"));
+                defaultList.add(new Bani("अरदास"));
                 break;
 
             default:  // English (default)
-                defaultList.add(new Bani("Hukamnama", "Daily Order from Sri Harmandir Sahib"));
-                defaultList.add(new Bani("Japji Sahib", "Morning (3:00 AM - 6:00 AM)"));
-                defaultList.add(new Bani("Jaap Sahib", "Morning (3:00 AM - 6:00 AM)"));
-                defaultList.add(new Bani("Chaupai Sahib", "Morning"));
-                defaultList.add(new Bani("Anand Sahib", "Morning"));
-                defaultList.add(new Bani("Tav Prasad Savaiye", "Morning"));
-                defaultList.add(new Bani("Rehras Sahib", "Evening (6:00 PM)"));
-                defaultList.add(new Bani("Kirtan Sohila", "Night (Before Sleep)"));
-                defaultList.add(new Bani("Sukhmani Sahib", "Anytime"));
-                defaultList.add(new Bani("Dukh Bhanjani Sahib", "Anytime"));
-                defaultList.add(new Bani("Ardaas", "Anytime"));
+                defaultList.add(new Bani("Hukamnama"));
+                defaultList.add(new Bani("Japji Sahib"));
+                defaultList.add(new Bani("Jaap Sahib"));
+                defaultList.add(new Bani("Chaupai Sahib"));
+                defaultList.add(new Bani("Anand Sahib"));
+                defaultList.add(new Bani("Tav Prasad Savaiye"));
+                defaultList.add(new Bani("Rehras Sahib"));
+                defaultList.add(new Bani("Kirtan Sohila"));
+                defaultList.add(new Bani("Sukhmani Sahib"));
+                defaultList.add(new Bani("Dukh Bhanjani Sahib"));
+                defaultList.add(new Bani("Ardaas"));
                 break;
         }
 
