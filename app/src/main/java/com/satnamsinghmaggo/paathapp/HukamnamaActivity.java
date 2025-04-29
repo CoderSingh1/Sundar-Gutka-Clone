@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -116,8 +117,22 @@ public class HukamnamaActivity extends AppCompatActivity {
     }
 
     private void hideControls() {
-        mediaPlayerLayout.animate().translationY(mediaPlayerLayout.getHeight()).setDuration(300).start();
-        timeLayout.animate().translationY(timeLayout.getHeight()).setDuration(300).start();
+        mediaPlayerLayout.setAlpha(1f);
+        timeLayout.setAlpha(1f);
+        mediaPlayerLayout.animate()
+                .translationY(mediaPlayerLayout.getHeight())
+                .alpha(0f)
+                .setDuration(300)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .start();
+
+        timeLayout.animate()
+                .translationY(timeLayout.getHeight())
+                .alpha(0f)
+                .setDuration(300)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .start();
+
 
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(mainLayout);
@@ -129,8 +144,22 @@ public class HukamnamaActivity extends AppCompatActivity {
     }
 
     private void showControls() {
-        mediaPlayerLayout.animate().translationY(0).setDuration(300).start();
-        timeLayout.animate().translationY(0).setDuration(300).start();
+        mediaPlayerLayout.setAlpha(0f);
+        timeLayout.setAlpha(0f);
+        mediaPlayerLayout.animate()
+                .translationY(0)
+                .alpha(1f)
+                .setDuration(300)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .start();
+
+        timeLayout.animate()
+                .translationY(0)
+                .alpha(1f)
+                .setDuration(300)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .start();
+
 
         ConstraintSet constraintSet = new ConstraintSet();
         constraintSet.clone(mainLayout);
