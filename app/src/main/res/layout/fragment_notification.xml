@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="12dp">
-
+    android:layout_margin="14dp">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -14,6 +13,7 @@
         app:cardElevation="6dp"
         app:cardCornerRadius="12dp"
         android:padding="12dp"
+        android:layout_margin="10dp"
         android:background="@color/card_background"
         android:clickable="true"
         android:focusable="true"
