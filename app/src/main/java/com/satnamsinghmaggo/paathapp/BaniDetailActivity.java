@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 
@@ -44,7 +45,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
     private Handler handler;
     NestedScrollView scrollView;
 
-    LinearLayout mediaControls,timeLayout;
+    LinearLayout mediaControls,timeLayout,linearLayout;
 
     ConstraintLayout mainLayout;
 
@@ -53,6 +54,8 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
     private static final String KEY_IS_PLAYING = "is_playing";
     private static final String KEY_FONT_SIZE = "font_size";
     private static final float DEFAULT_FONT_SIZE = 16f;
+
+    private boolean controlsVisible = true;
 
     private final Runnable updateSeekBar = new Runnable() {
         @Override
@@ -78,36 +81,10 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
 
             initializeViews();
             applyFontSize();
-            scrollView = findViewById(R.id.scrollView);
-            mediaControls = findViewById(R.id.mediaControls);
-            mainLayout = findViewById(R.id.mainLayout);
-            timeLayout = findViewById(R.id.timeLayout);
+            hidePlayerOnScroll();
 
 
-            scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    if (scrollY > oldScrollY) {
-                        // Scrolling down: Hide media controls
-                        mediaControls.animate().translationY(mediaControls.getHeight()).setDuration(300).start();
-                        timeLayout.animate().translationY(timeLayout.getHeight()).setDuration(300).start();
 
-                    } else if (scrollY < oldScrollY) {
-                        // Scrolling up: Optional, show controls back (if needed)
-                        mediaControls.animate().translationY(0).setDuration(300).start();
-                        timeLayout.animate().translationY(0).setDuration(300).start();
-                    }
-                }
-            });
-
-            scrollView.setOnClickListener(v -> {
-                if (mediaControls.getTranslationY() > 0) {
-                    // If hidden, bring it back
-                    mediaControls.animate().translationY(0).setDuration(300).start();
-                    timeLayout.animate().translationY(0).setDuration(300).start();
-
-                }
-            });
 
 
             initializeAudioSystem();
@@ -127,11 +104,64 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
         }
     }
 
+    private void hideControls() {
+        mediaControls.animate().translationY(mediaControls.getHeight()).setDuration(300).start();
+        timeLayout.animate().translationY(timeLayout.getHeight()).setDuration(300).start();
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(mainLayout);
+        constraintSet.clear(R.id.scrollView, ConstraintSet.BOTTOM);
+        constraintSet.connect(R.id.scrollView, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+        constraintSet.applyTo(mainLayout);
+
+        controlsVisible = false;
+    }
+
+    private void showControls() {
+        mediaControls.animate().translationY(0).setDuration(300).start();
+        timeLayout.animate().translationY(0).setDuration(300).start();
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(mainLayout);
+        constraintSet.clear(R.id.scrollView, ConstraintSet.BOTTOM);
+        constraintSet.connect(R.id.scrollView, ConstraintSet.BOTTOM, R.id.timeLayout, ConstraintSet.TOP);
+        constraintSet.applyTo(mainLayout);
+
+        controlsVisible = true;
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         applyFontSize();  // Re-apply in case user changed it in settings
         if (isPlaying) handler.post(updateSeekBar); // continue seek bar update
+    }
+
+    private void hidePlayerOnScroll(){
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+                    // scrolling down
+                    if (controlsVisible) hideControls();
+                } else if (scrollY < oldScrollY) {
+                    // scrolling up
+                    if (!controlsVisible) showControls();
+                }
+            }
+        });
+
+
+        linearLayout.setOnClickListener(v -> {
+            if (!controlsVisible) {
+                showControls();
+            }
+            else {
+                hideControls();
+            }
+        });
+
+
     }
 
     private void applyFontSize() {
@@ -206,6 +236,11 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
         tvCurrentTime = findViewById(R.id.tvCurrentTime);
         tvTotalTime = findViewById(R.id.tvTotalTime);
         BaniText = findViewById(R.id.BaniText);
+        scrollView = findViewById(R.id.scrollView);
+        mediaControls = findViewById(R.id.mediaControls);
+        mainLayout = findViewById(R.id.mainLayout);
+        timeLayout = findViewById(R.id.timeLayout);
+        linearLayout = findViewById(R.id.linearLayout);
     }
 
     private void initializeAudioSystem() {
