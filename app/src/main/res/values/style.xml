@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomTimePickerDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="android:buttonBarPositiveButtonStyle">@style/TimePickerButton</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/TimePickerButton</item>
+    </style>
+
+    <style name="TimePickerButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+</resources>
