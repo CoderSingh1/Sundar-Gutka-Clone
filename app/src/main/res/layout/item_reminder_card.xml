@@ -9,7 +9,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
+        android:layout_margin="6dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
         android:background="@color/card_background"
@@ -20,8 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp"
-        android:layout_margin="14dp">
+        android:padding="6dp"
+        android:layout_margin="6dp">
 
         <!-- Title + Time + Toggle Row -->
         <LinearLayout
