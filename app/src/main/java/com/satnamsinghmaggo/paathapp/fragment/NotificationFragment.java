@@ -104,7 +104,7 @@ public class NotificationFragment extends Fragment {
 
 
         TimePickerDialog timePickerDialog = new TimePickerDialog(
-                new ContextThemeWrapper(getContext(), R.style.CustomTimePickerDialogTheme),
+                new ContextThemeWrapper(getContext(), R.style.CustomTimePickerDialog),
                 (view, hourOfDay, minute1) -> {
                     String formattedTime = String.format(Locale.getDefault(), "%02d:%02d %s",
                             (hourOfDay % 12 == 0) ? 12 : hourOfDay % 12,

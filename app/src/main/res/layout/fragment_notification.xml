@@ -48,13 +48,14 @@
                 android:id="@+id/tvTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="10:00 AM"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:padding="8dp"
                 android:layout_margin="8dp"
+                android:textColor="@color/time_text_color"
                 android:contentDescription="pick_time"
-                android:background="@android:color/darker_gray"
-                android:textColor="@color/button_text_color" />
+                android:background="@android:color/darker_gray"/>
 
         </LinearLayout>
 
