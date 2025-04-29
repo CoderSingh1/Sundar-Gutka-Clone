@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,10 +25,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -57,13 +61,15 @@ public class HukamnamaActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private Handler handler = new Handler();
     private Runnable updateSeekBar;
-    private LinearLayout mediaPlayerLayout;
+    private LinearLayout mediaPlayerLayout,linearLayout,timeLayout;
+    NestedScrollView scrollView;
+    ConstraintLayout mainLayout;
     private boolean isPlaying = false;
     private static final OkHttpClient client = new OkHttpClient();
-    Spinner fontSizeSpinner;
     private TextView gurmukhiTitle, gurmukhiText, punjabiTranslation, punjabiText, englishTranslation, englishText, Maintitle1, MainTitle2, PunjabiDate, PunjabiAng, EnglishDate, EnglishAng, NormalDate;
     private static final String KEY_FONT_SIZE = "font_size";
     private static final float DEFAULT_FONT_SIZE = 16f;
+    private boolean controlsVisible = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,7 @@ public class HukamnamaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_hukamnama);
         initViews();
         applyFontSize();
+        hidePlayerOnScroll();
         applyControlIconTint();
         setupLottieAnimation();
         applyWindowInsets();
@@ -81,7 +88,6 @@ public class HukamnamaActivity extends AppCompatActivity {
 
 
     private void initViews() {
-        // pdfView = findViewById(R.id.pdfview);
         lottieLoader = findViewById(R.id.lottieLoader);
         seekBar = findViewById(R.id.seekBar);
         playButton = findViewById(R.id.btnPlayPause);
@@ -101,9 +107,68 @@ public class HukamnamaActivity extends AppCompatActivity {
         EnglishDate = findViewById(R.id.englishDate);
         EnglishAng = findViewById(R.id.englishAng);
         NormalDate = findViewById(R.id.normalDate);
+        scrollView = findViewById(R.id.Scrollview);
+        timeLayout = findViewById(R.id.timeLayout);
+        linearLayout = findViewById(R.id.linearLayout);
+        mainLayout = findViewById(R.id.main);
 
-        ;
+
     }
+
+    private void hideControls() {
+        mediaPlayerLayout.animate().translationY(mediaPlayerLayout.getHeight()).setDuration(300).start();
+        timeLayout.animate().translationY(timeLayout.getHeight()).setDuration(300).start();
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(mainLayout);
+        constraintSet.clear(R.id.Scrollview, ConstraintSet.BOTTOM);
+        constraintSet.connect(R.id.Scrollview, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
+        constraintSet.applyTo(mainLayout);
+
+        controlsVisible = false;
+    }
+
+    private void showControls() {
+        mediaPlayerLayout.animate().translationY(0).setDuration(300).start();
+        timeLayout.animate().translationY(0).setDuration(300).start();
+
+        ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(mainLayout);
+        constraintSet.clear(R.id.Scrollview, ConstraintSet.BOTTOM);
+        constraintSet.connect(R.id.Scrollview, ConstraintSet.BOTTOM, R.id.timeLayout, ConstraintSet.TOP);
+        constraintSet.applyTo(mainLayout);
+
+        controlsVisible = true;
+    }
+
+    private void hidePlayerOnScroll() {
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+                    // scrolling down
+                    if (controlsVisible) hideControls();
+                } else if (scrollY < oldScrollY) {
+                    // scrolling up
+                    if (!controlsVisible) showControls();
+                }
+            }
+        });
+
+
+
+        linearLayout.setOnClickListener(v -> {
+            if (!controlsVisible) {
+                showControls();
+            }
+            else {
+                hideControls();
+            }
+        });
+
+
+    }
+
 
     private void setupLottieAnimation() {
         lottieLoader.setVisibility(View.VISIBLE);

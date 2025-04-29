@@ -82,11 +82,6 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
             initializeViews();
             applyFontSize();
             hidePlayerOnScroll();
-
-
-
-
-
             initializeAudioSystem();
             setupBaniDetails();
             setupMediaPlayer();

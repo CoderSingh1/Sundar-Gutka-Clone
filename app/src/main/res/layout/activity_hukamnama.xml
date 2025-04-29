@@ -23,7 +23,7 @@
         app:lottie_loop="true"
         app:lottie_renderMode="hardware" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/Scrollview"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -36,6 +36,7 @@
         app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="6dp"
@@ -162,7 +163,7 @@
                 android:textSize="18sp"
                 android:textColor="?android:textColorPrimary" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/timeLayout"
@@ -171,6 +172,7 @@
         android:layout_margin="8dp"
         android:background="@android:color/transparent"
         android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/Scrollview"
         app:layout_constraintBottom_toTopOf="@+id/mediaControls"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
