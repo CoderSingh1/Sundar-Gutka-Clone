@@ -35,4 +35,12 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="CustomTimePickerDialogTheme" parent="Theme.Material3.DayNight.Dialog.Alert">
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorSurface">@color/black</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
+
 </resources>

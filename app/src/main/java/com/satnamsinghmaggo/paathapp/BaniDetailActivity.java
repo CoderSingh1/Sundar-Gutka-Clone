@@ -14,12 +14,16 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.TypedValue;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 
 import java.io.BufferedReader;
@@ -38,6 +42,11 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
     private boolean isPlaying = false;
     private MediaPlayer mediaPlayer;
     private Handler handler;
+    NestedScrollView scrollView;
+
+    LinearLayout mediaControls,timeLayout;
+
+    ConstraintLayout mainLayout;
 
     private static final int SKIP_DURATION = 5000;
     private static final String KEY_POSITION = "position";
@@ -69,6 +78,38 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
 
             initializeViews();
             applyFontSize();
+            scrollView = findViewById(R.id.scrollView);
+            mediaControls = findViewById(R.id.mediaControls);
+            mainLayout = findViewById(R.id.mainLayout);
+            timeLayout = findViewById(R.id.timeLayout);
+
+
+            scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    if (scrollY > oldScrollY) {
+                        // Scrolling down: Hide media controls
+                        mediaControls.animate().translationY(mediaControls.getHeight()).setDuration(300).start();
+                        timeLayout.animate().translationY(timeLayout.getHeight()).setDuration(300).start();
+
+                    } else if (scrollY < oldScrollY) {
+                        // Scrolling up: Optional, show controls back (if needed)
+                        mediaControls.animate().translationY(0).setDuration(300).start();
+                        timeLayout.animate().translationY(0).setDuration(300).start();
+                    }
+                }
+            });
+
+            scrollView.setOnClickListener(v -> {
+                if (mediaControls.getTranslationY() > 0) {
+                    // If hidden, bring it back
+                    mediaControls.animate().translationY(0).setDuration(300).start();
+                    timeLayout.animate().translationY(0).setDuration(300).start();
+
+                }
+            });
+
+
             initializeAudioSystem();
             setupBaniDetails();
             setupMediaPlayer();

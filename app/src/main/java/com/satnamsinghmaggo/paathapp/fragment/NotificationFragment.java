@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class NotificationFragment extends Fragment {
         layoutInflater = LayoutInflater.from(getContext());
         sharedPreferences = requireContext().getSharedPreferences("ReminderPrefs", Context.MODE_PRIVATE);
         loadReminders();
+        tvTime.setText(DateFormat.format("hh:mm aa", Calendar.getInstance()));
 
 
         requestNotificationPermission();
@@ -98,13 +100,22 @@ public class NotificationFragment extends Fragment {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (view, hourOfDay, minute1) -> {
-            String formattedTime = String.format(Locale.getDefault(), "%02d:%02d %s",
-                    (hourOfDay % 12 == 0) ? 12 : hourOfDay % 12,
-                    minute1,
-                    (hourOfDay < 12) ? "AM" : "PM");
-            tvTime.setText(formattedTime);
-        }, hour, minute, false);
+
+
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(
+                new ContextThemeWrapper(getContext(), R.style.CustomTimePickerDialogTheme),
+                (view, hourOfDay, minute1) -> {
+                    String formattedTime = String.format(Locale.getDefault(), "%02d:%02d %s",
+                            (hourOfDay % 12 == 0) ? 12 : hourOfDay % 12,
+                            minute1,
+                            (hourOfDay < 12) ? "AM" : "PM");
+                    tvTime.setText(formattedTime);
+                },
+                hour,
+                minute,
+                false
+        );
 
         timePickerDialog.show();
     }
