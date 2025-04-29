@@ -53,5 +53,12 @@
     <string name="bani_font_size_medium">Medium</string>
     <string name="bani_font_size_large">Large</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="About_Us">Nitnem Paath is proudly developed by Smart IT Solutions, a trusted name in delivering innovative and reliable technology services.
+Our goal is to blend spirituality with modern convenience, offering users a peaceful and accessible way to connect with daily Sikh prayers.
+Backed by our commitment to quality, simplicity, and excellence, Nitnem Paath ensures a seamless experience for listeners worldwide.
+We at Smart IT Solutions are honored to support your spiritual journey with tools that are easy to use, uplifting, and crafted with care.
+
+ 				Waheguru Ji Ka Khalsa, Waheguru Ji Ki Fateh!</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

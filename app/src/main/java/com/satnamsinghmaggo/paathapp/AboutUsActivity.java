@@ -1,27 +1,25 @@
 package com.satnamsinghmaggo.paathapp;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.EditText;
+import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class FeedbackActivity extends AppCompatActivity {
+public class AboutUsActivity extends AppCompatActivity {
 
-    EditText editname, editmessage, editemail;
+    TextView textView, textView1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        // EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_feedback);
-        editname = findViewById(R.id.edit_name);
-        editmessage = findViewById(R.id.edit_message);
-        editemail = findViewById(R.id.edit_email);
+        setContentView(R.layout.activity_about_us);
+        textView1 = findViewById(R.id.aboutus_heading);
+        textView = findViewById(R.id.aboutus);
+
 
 
 

@@ -247,7 +247,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 return true;
             } else if (id == R.id.nav_about) {
-                Toast.makeText(this, "About section coming soon", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, AboutUsActivity.class);
+                startActivity(intent);
                 return true;
             } else if (id == R.id.nav_feedback ) {
                openUrl("https://forms.gle/rcow4cE1Nmvcr4FR8");
