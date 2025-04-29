@@ -81,36 +81,11 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
 
             initializeViews();
             applyFontSize();
-            scrollView = findViewById(R.id.scrollView);
-            mediaControls = findViewById(R.id.mediaControls);
-            mainLayout = findViewById(R.id.mainLayout);
-            timeLayout = findViewById(R.id.timeLayout);
-            linearLayout = findViewById(R.id.linearLayout);
+            hidePlayerOnScroll();
 
 
 
-            scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-                @Override
-                public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                    if (scrollY > oldScrollY) {
-                        // scrolling down
-                        if (controlsVisible) hideControls();
-                    } else if (scrollY < oldScrollY) {
-                        // scrolling up
-                        if (!controlsVisible) showControls();
-                    }
-                }
-            });
 
-
-            linearLayout.setOnClickListener(v -> {
-                if (!controlsVisible) {
-                    showControls();
-                }
-                else {
-                    hideControls();
-                }
-            });
 
             initializeAudioSystem();
             setupBaniDetails();
@@ -160,6 +135,33 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
         super.onResume();
         applyFontSize();  // Re-apply in case user changed it in settings
         if (isPlaying) handler.post(updateSeekBar); // continue seek bar update
+    }
+
+    private void hidePlayerOnScroll(){
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+                    // scrolling down
+                    if (controlsVisible) hideControls();
+                } else if (scrollY < oldScrollY) {
+                    // scrolling up
+                    if (!controlsVisible) showControls();
+                }
+            }
+        });
+
+
+        linearLayout.setOnClickListener(v -> {
+            if (!controlsVisible) {
+                showControls();
+            }
+            else {
+                hideControls();
+            }
+        });
+
+
     }
 
     private void applyFontSize() {
@@ -234,6 +236,11 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
         tvCurrentTime = findViewById(R.id.tvCurrentTime);
         tvTotalTime = findViewById(R.id.tvTotalTime);
         BaniText = findViewById(R.id.BaniText);
+        scrollView = findViewById(R.id.scrollView);
+        mediaControls = findViewById(R.id.mediaControls);
+        mainLayout = findViewById(R.id.mainLayout);
+        timeLayout = findViewById(R.id.timeLayout);
+        linearLayout = findViewById(R.id.linearLayout);
     }
 
     private void initializeAudioSystem() {
