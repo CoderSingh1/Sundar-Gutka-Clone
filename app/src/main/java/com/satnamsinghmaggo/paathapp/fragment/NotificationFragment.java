@@ -23,9 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,7 +50,6 @@ public class NotificationFragment extends Fragment {
 
     private EditText etBaniTitle;
     private TextView tvTime;
-    private Button btnAddReminder;
     private LinearLayout reminderContainer;
 
     private LayoutInflater layoutInflater;
@@ -69,7 +66,7 @@ public class NotificationFragment extends Fragment {
 
         etBaniTitle = view.findViewById(R.id.etBaniTitle);
         tvTime = view.findViewById(R.id.tvTime);
-        btnAddReminder = view.findViewById(R.id.btnAddCustomReminder);
+        Button btnAddReminder = view.findViewById(R.id.btnAddCustomReminder);
         reminderContainer = view.findViewById(R.id.reminderContainer);
         layoutInflater = LayoutInflater.from(getContext());
         sharedPreferences = requireContext().getSharedPreferences("ReminderPrefs", Context.MODE_PRIVATE);
@@ -199,7 +196,7 @@ public class NotificationFragment extends Fragment {
         reminderContainer.addView(reminderView);
 
         etBaniTitle.setText("");
-        tvTime.setText("10:00 AM");
+
     }
 
     private void requestNotificationPermission() {
@@ -209,14 +206,6 @@ public class NotificationFragment extends Fragment {
                 ActivityCompat.requestPermissions(requireActivity(),
                         new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
             }
-        }
-    }
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    "bani_reminders", "Daily Notifications", NotificationManager.IMPORTANCE_HIGH);
-            NotificationManager manager = (NotificationManager) requireContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            manager.createNotificationChannel(channel);
         }
     }
     @SuppressLint("ScheduleExactAlarm")

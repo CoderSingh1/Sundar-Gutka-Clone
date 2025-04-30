@@ -1,5 +1,6 @@
 package com.satnamsinghmaggo.paathapp.adapter;
 
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,6 @@ public class BaniAdapter extends RecyclerView.Adapter<BaniAdapter.BaniViewHolder
 
     public static class BaniViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
-        TextView tvTime;
 
         public BaniViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +69,7 @@ public class BaniAdapter extends RecyclerView.Adapter<BaniAdapter.BaniViewHolder
     public int getItemCount() {
         return banis.size();
     }
+
 
     public void updateBanis(List<Bani> newBanis) {
         this.banis = newBanis;

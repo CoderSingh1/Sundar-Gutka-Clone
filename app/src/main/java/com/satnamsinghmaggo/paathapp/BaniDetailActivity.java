@@ -16,7 +16,6 @@ import android.util.TypedValue;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -160,16 +159,13 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
     }
 
     private void hidePlayerOnScroll(){
-        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (scrollY > oldScrollY) {
-                    // scrolling down
-                    if (controlsVisible) hideControls();
-                } else if (scrollY < oldScrollY) {
-                    // scrolling up
-                    if (!controlsVisible) showControls();
-                }
+        scrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (scrollY > oldScrollY) {
+                // scrolling down
+                if (controlsVisible) hideControls();
+            } else if (scrollY < oldScrollY) {
+                // scrolling up
+                if (!controlsVisible) showControls();
             }
         });
 
@@ -240,23 +236,25 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
 
     private Integer getAudioResIdForBani(String baniName) {
         if (baniName == null) return null;
-        switch (baniName.toLowerCase(Locale.ROOT)) {
-            case "japji sahib","ਜਪੁਜੀ ਸਾਹਿਬ","जपजी साहिब": return R.raw.japji_sahib;
-            case "jaap sahib","ਜਾਪ ਸਾਹਿਬ","जाप साहिब": return R.raw.jaap_sahib;
-            case "rehras sahib","ਰਹਿਰਾਸ ਸਾਹਿਬ","रहिरास साहिब": return R.raw.rehras_sahib;
-            case "chaupai sahib","ਚੌਪਈ ਸਾਹਿਬ","चौपाई साहिब": return R.raw.chaupai_sahib;
-            case "anand sahib","ਆਨੰਦ ਸਾਹਿਬ","आनंद साहिब": return R.raw.anand_sahib;
-            case "tav prasad savaiye","ਤਵ ਪ੍ਰਸਾਦ ਸਵੱਯੇ","तव प्रसाद सवैये": return R.raw.tav_prasad_savaiye;
-            case "kirtan sohila","ਕੀਰਤਨ ਸੋਹਿਲਾ","कीर्तन सोहिला": return R.raw.kirtan_sohila;
-            case "sukhmani sahib","ਸੁਖਮਨੀ ਸਾਹਿਬ","सुखमनी साहिब": return R.raw.sukhmani_sahib;
-            case "dukh bhanjani sahib","ਦੁੱਖ ਭੰਜਨੀ ਸਾਹਿਬ","दुख भंजनि साहिब": return R.raw.dukh_bhanjani_sahib;
-            case "ardas","ਅਰਦਾਸ","अरदास": return R.raw.ardas;
-            case "asa di var","ਆਸਾ ਦੀ ਵਾਰ","आसा दी वार" : return R.raw.asa_di_var;
-            case "shabad hazare","ਸ਼ਬਦ ਹਜ਼ਾਰੇ","शबद हजारे" : return R.raw.shabad_hazare;
-            case "aarti","ਆਰਤੀ","आरती": return R.raw.aarti;
-            case "laavaan","ਲਾਵਾਂ","लावाँ": return R.raw.laavan;
-            default: return null;
-        }
+        return switch (baniName.toLowerCase(Locale.ROOT)) {
+            case "japji sahib", "ਜਪੁਜੀ ਸਾਹਿਬ", "जपजी साहिब" -> R.raw.japji_sahib;
+            case "jaap sahib", "ਜਾਪ ਸਾਹਿਬ", "जाप साहिब" -> R.raw.jaap_sahib;
+            case "rehras sahib", "ਰਹਿਰਾਸ ਸਾਹਿਬ", "रहिरास साहिब" -> R.raw.rehras_sahib;
+            case "chaupai sahib", "ਚੌਪਈ ਸਾਹਿਬ", "चौपाई साहिब" -> R.raw.chaupai_sahib;
+            case "anand sahib", "ਆਨੰਦ ਸਾਹਿਬ", "आनंद साहिब" -> R.raw.anand_sahib;
+            case "tav prasad savaiye", "ਤਵ ਪ੍ਰਸਾਦ ਸਵੱਯੇ", "तव प्रसाद सवैये" ->
+                    R.raw.tav_prasad_savaiye;
+            case "kirtan sohila", "ਕੀਰਤਨ ਸੋਹਿਲਾ", "कीर्तन सोहिला" -> R.raw.kirtan_sohila;
+            case "sukhmani sahib", "ਸੁਖਮਨੀ ਸਾਹਿਬ", "सुखमनी साहिब" -> R.raw.sukhmani_sahib;
+            case "dukh bhanjani sahib", "ਦੁੱਖ ਭੰਜਨੀ ਸਾਹਿਬ", "दुख भंजनि साहिब" ->
+                    R.raw.dukh_bhanjani_sahib;
+            case "ardas", "ਅਰਦਾਸ", "अरदास" -> R.raw.ardas;
+            case "asa di var", "ਆਸਾ ਦੀ ਵਾਰ", "आसा दी वार" -> R.raw.asa_di_var;
+            case "shabad hazare", "ਸ਼ਬਦ ਹਜ਼ਾਰੇ", "शबद हजारे" -> R.raw.shabad_hazare;
+            case "aarti", "ਆਰਤੀ", "आरती" -> R.raw.aarti;
+            case "laavaan", "ਲਾਵਾਂ", "लावाँ" -> R.raw.laavan;
+            default -> null;
+        };
     }
 
     private void initializeViews() {

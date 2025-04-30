@@ -36,7 +36,6 @@ public class BaniOrderFragment extends Fragment {
     private final List<Bani> banis = new ArrayList<>();
     private String selectedLang = "en";
 
-    private static final String KEY_BANI_ORDER = "bani_order";
     public static BaniOrderFragment newInstance(String lang) {
         BaniOrderFragment fragment = new BaniOrderFragment();
         Bundle args = new Bundle();
