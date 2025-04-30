@@ -74,22 +74,26 @@ public class NotificationFragment extends Fragment {
         tvTime.setText(DateFormat.format("hh:mm aa", Calendar.getInstance()));
 
 
-        requestNotificationPermission();
-      //  createNotificationChannel();
-        if (canScheduleExactAlarms()) {
-            scheduleDailyNotification(requireContext(), 17, 49, 100, "Daily Reminder", "This is a daily reminder");
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                startActivity(intent);
-            }
-        }
-
         tvTime.setOnClickListener(v -> showTimePickerDialog());
 
         btnAddReminder.setOnClickListener(v -> addReminder());
 
         return view;
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isVisible()) {
+            requestNotificationPermission();
+            if (canScheduleExactAlarms()) {
+                scheduleDailyNotification(requireContext(), 17, 49, 100, "Daily Reminder", "This is a daily reminder");
+            } else {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+                    startActivity(intent);
+                }
+            }
+        }
     }
 
     private void showTimePickerDialog() {

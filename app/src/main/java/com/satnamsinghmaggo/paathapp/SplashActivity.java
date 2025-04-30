@@ -19,7 +19,7 @@ public class SplashActivity extends AppCompatActivity {
         ActivitySplashBinding binding = ActivitySplashBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Delay the start of MainActivity
+
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             startActivity(new Intent(SplashActivity.this, LanguageSelectionActivity.class));
             finish();
