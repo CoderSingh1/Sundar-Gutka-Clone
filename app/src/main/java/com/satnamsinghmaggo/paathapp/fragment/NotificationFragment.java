@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresPermission;
@@ -57,6 +59,8 @@ public class NotificationFragment extends Fragment {
     private final Gson gson = new Gson();
     private SharedPreferences sharedPreferences;
     private List<Reminder> reminderList = new ArrayList<>();
+    private ActivityResultLauncher<Intent> exactAlarmPermissionLauncher;
+
 
     @SuppressLint("ScheduleExactAlarm")
     @Nullable
@@ -72,6 +76,26 @@ public class NotificationFragment extends Fragment {
         sharedPreferences = requireContext().getSharedPreferences("ReminderPrefs", Context.MODE_PRIVATE);
         loadReminders();
         tvTime.setText(DateFormat.format("hh:mm aa", Calendar.getInstance()));
+
+        exactAlarmPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    // Called when the user returns from Settings
+                    if (canScheduleExactAlarms()) {
+                        Toast.makeText(requireContext(), "Permission granted! Scheduling alarms...", Toast.LENGTH_SHORT).show();
+                        // Retry scheduling all reminders
+                        for (Reminder reminder : reminderList) {
+                            if (reminder.isEnabled) {
+                                int hour = getHour(reminder.time);
+                                int minute = getMinute(reminder.time);
+                                scheduleDailyNotification(requireContext(), hour, minute, reminder.requestCode, reminder.title, "Reminder: " + reminder.title);
+                            }
+                        }
+                    } else {
+                        Toast.makeText(requireContext(), "Exact Alarm permission still not granted", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
 
 
         tvTime.setOnClickListener(v -> showTimePickerDialog());
@@ -90,7 +114,7 @@ public class NotificationFragment extends Fragment {
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                    startActivity(intent);
+                    exactAlarmPermissionLauncher.launch(intent);
                 }
             }
         }
@@ -166,7 +190,7 @@ public class NotificationFragment extends Fragment {
                 Toast.makeText(getContext(), "Reminder Set", Toast.LENGTH_SHORT).show();
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                startActivity(intent);
+                exactAlarmPermissionLauncher.launch(intent);
             }
         }
 
@@ -183,7 +207,8 @@ public class NotificationFragment extends Fragment {
                     scheduleDailyNotification(requireContext(), hour1, minute1, reminder.requestCode, reminder.title, "Reminder: " + reminder.title);
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                    startActivity(intent);
+                    exactAlarmPermissionLauncher.launch(intent);
+                    switchReminder.setChecked(false);
                 }
             } else {
                 cancelReminder(reminder.requestCode);
@@ -194,7 +219,16 @@ public class NotificationFragment extends Fragment {
 
         btnDelete.setOnClickListener(v -> {
             reminderContainer.removeView(reminderView);
-            // Optional: Cancel the alarm here if you save requestCode
+            cancelReminder(reminder.requestCode);
+
+            for (int i = 0; i < reminderList.size(); i++) {
+                if (reminderList.get(i).requestCode == reminder.requestCode) {
+                    reminderList.remove(i);
+                    break;
+                }
+            }
+
+            saveReminders();
         });
 
         reminderContainer.addView(reminderView);
@@ -310,7 +344,7 @@ public class NotificationFragment extends Fragment {
                     scheduleDailyNotification(requireContext(), hour, minute, reminder.requestCode, reminder.title, "Reminder: " + reminder.title);
                 } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                    startActivity(intent);
+                    exactAlarmPermissionLauncher.launch(intent);
                 }
             } else {
                 cancelReminder(reminder.requestCode);
