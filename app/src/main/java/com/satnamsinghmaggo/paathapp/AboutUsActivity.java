@@ -23,14 +23,7 @@ public class AboutUsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_about_us);
         textView1 = findViewById(R.id.aboutus_heading);
         textView = findViewById(R.id.aboutus);
-
-
-
         textView.setTextSize( fontSize);
-
-
-
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

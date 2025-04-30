@@ -242,9 +242,19 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
         if (baniName == null) return null;
         switch (baniName.toLowerCase(Locale.ROOT)) {
             case "japji sahib","ਜਪੁਜੀ ਸਾਹਿਬ","जपजी साहिब": return R.raw.japji_sahib;
-           // case "jaap sahib": return R.raw.jaap_sahib;
-           // case "rehras sahib": return R.raw.rehras_sahib;
-           // case "kirtan sohila": return R.raw.kirtan_sohila;
+            case "jaap sahib","ਜਾਪ ਸਾਹਿਬ","जाप साहिब": return R.raw.jaap_sahib;
+            case "rehras sahib","ਰਹਿਰਾਸ ਸਾਹਿਬ","रहिरास साहिब": return R.raw.rehras_sahib;
+            case "chaupai sahib","ਚੌਪਈ ਸਾਹਿਬ","चौपाई साहिब": return R.raw.chaupai_sahib;
+            case "anand sahib","ਆਨੰਦ ਸਾਹਿਬ","आनंद साहिब": return R.raw.anand_sahib;
+            case "tav prasad savaiye","ਤਵ ਪ੍ਰਸਾਦ ਸਵੱਯੇ","तव प्रसाद सवैये": return R.raw.tav_prasad_savaiye;
+            case "kirtan sohila","ਕੀਰਤਨ ਸੋਹਿਲਾ","कीर्तन सोहिला": return R.raw.kirtan_sohila;
+            case "sukhmani sahib","ਸੁਖਮਨੀ ਸਾਹਿਬ","सुखमनी साहिब": return R.raw.sukhmani_sahib;
+            case "dukh bhanjani sahib","ਦੁੱਖ ਭੰਜਨੀ ਸਾਹਿਬ","दुख भंजनि साहिब": return R.raw.dukh_bhanjani_sahib;
+            case "ardas","ਅਰਦਾਸ","अरदास": return R.raw.ardas;
+            case "asa di var","ਆਸਾ ਦੀ ਵਾਰ","आसा दी वार" : return R.raw.asa_di_var;
+            case "shabad hazare","ਸ਼ਬਦ ਹਜ਼ਾਰੇ","शबद हजारे" : return R.raw.shabad_hazare;
+            case "aarti","ਆਰਤੀ","आरती": return R.raw.aarti;
+            case "laavaan","ਲਾਵਾਂ","लावाँ": return R.raw.laavan;
             default: return null;
         }
     }

@@ -137,6 +137,10 @@ public class BaniOrderFragment extends Fragment {
                 defaultList.add(new Bani("ਕੀਰਤਨ ਸੋਹਿਲਾ"));
                 defaultList.add(new Bani("ਸੁਖਮਨੀ ਸਾਹਿਬ"));
                 defaultList.add(new Bani("ਦੁੱਖ ਭੰਜਨੀ ਸਾਹਿਬ"));
+                defaultList.add(new Bani("ਆਸਾ ਦੀ ਵਾਰ"));
+                defaultList.add(new Bani("ਸ਼ਬਦ ਹਜ਼ਾਰੇ"));
+                defaultList.add(new Bani("ਆਰਤੀ"));
+                defaultList.add(new Bani("ਲਾਵਾਂ"));
                 defaultList.add(new Bani("ਅਰਦਾਸ"));
                 break;
 
@@ -151,6 +155,10 @@ public class BaniOrderFragment extends Fragment {
                 defaultList.add(new Bani("कीर्तन सोहिला"));
                 defaultList.add(new Bani("सुखमनी साहिब"));
                 defaultList.add(new Bani("दुख भंजनि साहिब"));
+                defaultList.add(new Bani("आसा दी वार"));
+                defaultList.add(new Bani("शबद हजारे"));
+                defaultList.add(new Bani("आरती"));
+                defaultList.add(new Bani("लावाँ"));
                 defaultList.add(new Bani("अरदास"));
                 break;
 
@@ -165,6 +173,10 @@ public class BaniOrderFragment extends Fragment {
                 defaultList.add(new Bani("Kirtan Sohila"));
                 defaultList.add(new Bani("Sukhmani Sahib"));
                 defaultList.add(new Bani("Dukh Bhanjani Sahib"));
+                defaultList.add(new Bani("Asa Di Var"));
+                defaultList.add(new Bani("Shabad Hazare"));
+                defaultList.add(new Bani("Aarti"));
+                defaultList.add(new Bani("Laavaan"));
                 defaultList.add(new Bani("Ardaas"));
                 break;
         }

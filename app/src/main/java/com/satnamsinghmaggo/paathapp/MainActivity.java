@@ -186,6 +186,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new Bani("कीर्तन सोहिला"),
                     new Bani("सुखमनी साहिब"),
                     new Bani("दुख भंजनि साहिब"),
+                    new Bani("आसा दी वार"),
+                    new Bani("शबद हजारे"),
+                    new Bani("आरती"),
+                    new Bani("लावाँ"),
                     new Bani("अरदास")
             );
         } else if (selectedLang.equals("pa")) {
@@ -200,6 +204,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new Bani("ਕੀਰਤਨ ਸੋਹਿਲਾ"),
                     new Bani("ਸੁਖਮਨੀ ਸਾਹਿਬ"),
                     new Bani("ਦੁੱਖ ਭੰਜਨੀ ਸਾਹਿਬ"),
+                    new Bani("ਆਸਾ ਦੀ ਵਾਰ"),
+                    new Bani("ਸ਼ਬਦ ਹਜ਼ਾਰੇ"),
+                    new Bani("ਆਰਤੀ"),
+                    new Bani("ਲਾਵਾਂ"),
                     new Bani("ਅਰਦਾਸ")
             );
         } else {
@@ -215,6 +223,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     new Bani("Kirtan Sohila"),
                     new Bani("Sukhmani Sahib"),
                     new Bani("Dukh Bhanjani Sahib"),
+                    new Bani("Asa Di Var"),
+                    new Bani("Shabad Hazare"),
+                    new Bani("Aarti"),
+                    new Bani("Laavaan"),
                     new Bani("Ardaas")
             );
         }
