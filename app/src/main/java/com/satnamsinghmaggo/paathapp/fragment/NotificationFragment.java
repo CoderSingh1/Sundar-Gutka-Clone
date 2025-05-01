@@ -60,6 +60,9 @@ public class NotificationFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private List<Reminder> reminderList = new ArrayList<>();
     private ActivityResultLauncher<Intent> exactAlarmPermissionLauncher;
+    private final String PREF_FIRST_VISIT = "first_visit_done";
+
+    private ActivityResultLauncher<String> notificationPermissionLauncher;
 
 
     @SuppressLint("ScheduleExactAlarm")
@@ -80,10 +83,8 @@ public class NotificationFragment extends Fragment {
         exactAlarmPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    // Called when the user returns from Settings
                     if (canScheduleExactAlarms()) {
                         Toast.makeText(requireContext(), "Permission granted! Scheduling alarms...", Toast.LENGTH_SHORT).show();
-                        // Retry scheduling all reminders
                         for (Reminder reminder : reminderList) {
                             if (reminder.isEnabled) {
                                 int hour = getHour(reminder.time);
@@ -97,6 +98,19 @@ public class NotificationFragment extends Fragment {
                 }
         );
 
+        notificationPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted) {
+                        Toast.makeText(requireContext(), "Notification permission granted", Toast.LENGTH_SHORT).show();
+                        addReminder();  // Retry after permission granted
+                    } else {
+                        Toast.makeText(requireContext(), "Notification permission denied", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+
+
 
         tvTime.setOnClickListener(v -> showTimePickerDialog());
 
@@ -108,11 +122,11 @@ public class NotificationFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (isVisible()) {
-            requestNotificationPermission();
-            if (canScheduleExactAlarms()) {
-                scheduleDailyNotification(requireContext(), 17, 49, 100, "Daily Reminder", "This is a daily reminder");
-            } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            boolean firstVisitDone = sharedPreferences.getBoolean(PREF_FIRST_VISIT, false);
+
+            if (!firstVisitDone) {
+                sharedPreferences.edit().putBoolean(PREF_FIRST_VISIT, true).apply();  // mark as visited
+                if (!canScheduleExactAlarms() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
                     exactAlarmPermissionLauncher.launch(intent);
                 }
@@ -147,6 +161,13 @@ public class NotificationFragment extends Fragment {
 
     @SuppressLint("ScheduleExactAlarm")
     private void addReminder() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
+                        != PackageManager.PERMISSION_GRANTED) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+            return;
+        }
+
         String title = etBaniTitle.getText().toString().trim();
         String time = tvTime.getText().toString().trim();
 
@@ -191,6 +212,8 @@ public class NotificationFragment extends Fragment {
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 Intent intent = new Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
                 exactAlarmPermissionLauncher.launch(intent);
+                Toast.makeText(getContext(), "Please allow alarm permission to set reminders.", Toast.LENGTH_SHORT).show();
+                return;
             }
         }
 

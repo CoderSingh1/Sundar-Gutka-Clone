@@ -62,7 +62,7 @@ public class HukamnamaActivity extends AppCompatActivity {
     ConstraintLayout mainLayout;
     private boolean isPlaying = false;
     private static final OkHttpClient client = new OkHttpClient();
-    private TextView gurmukhiTitle, gurmukhiText, punjabiTranslation, punjabiText, englishTranslation, englishText, Maintitle1, MainTitle2, PunjabiDate, PunjabiAng, EnglishDate, EnglishAng, NormalDate;
+    private TextView gurmukhiTitle, gurmukhiText, punjabiTranslation, punjabiText, englishTranslation, englishText, Maintitle1, MainTitle2, PunjabiDate, PunjabiAng, EnglishDate, EnglishAng, NormalDate, tvCurrentTime, tvTotalTime;
     private static final String KEY_FONT_SIZE = "font_size";
     private static final float DEFAULT_FONT_SIZE = 16f;
     private boolean controlsVisible = true;
@@ -107,7 +107,8 @@ public class HukamnamaActivity extends AppCompatActivity {
         timeLayout = findViewById(R.id.timeLayout);
         linearLayout = findViewById(R.id.linearLayout);
         mainLayout = findViewById(R.id.main);
-
+        tvCurrentTime = findViewById(R.id.tvCurrentTime);
+        tvTotalTime = findViewById(R.id.tvTotalTime);
 
     }
 
@@ -338,12 +339,16 @@ public class HukamnamaActivity extends AppCompatActivity {
         mediaPlayer.setOnPreparedListener(mp -> {
             seekBar.setMax(mp.getDuration());
             playButton.setEnabled(true);
+            tvTotalTime.setText(formatTime(mp.getDuration()));
+
             updateSeekBar = new Runnable() {
                 @Override
                 public void run() {
                     if (mediaPlayer != null && mediaPlayer.isPlaying()) {
                         seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                        tvCurrentTime.setText(formatTime(mediaPlayer.getCurrentPosition()));
                         handler.postDelayed(this, 500);
+
                     }
                 }
             };
@@ -359,7 +364,13 @@ public class HukamnamaActivity extends AppCompatActivity {
                     mediaPlayer.seekTo(progress);
                 }
             }
-            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+            @Override public void onStartTrackingTouch(SeekBar seekBar) {
+                if (mediaPlayer != null) {
+                    int pos = seekBar.getProgress();
+                    mediaPlayer.seekTo(pos);
+                    tvCurrentTime.setText(formatTime(pos));
+                }
+            }
             @Override public void onStopTrackingTouch(SeekBar seekBar) {}
         });
     }
@@ -505,6 +516,12 @@ public class HukamnamaActivity extends AppCompatActivity {
             isPlaying = false;
             handler.removeCallbacks(updateSeekBar);
         }
+    }
+
+    private String formatTime(int millis) {
+        int minutes = (millis / 1000) / 60;
+        int seconds = (millis / 1000) % 60;
+        return String.format("%02d:%02d", minutes, seconds);
     }
 
 }
