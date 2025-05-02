@@ -20,5 +20,7 @@ public class App extends Application {
 
         SharedPreferences fontPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         userFontSize = fontPrefs.getFloat("font_size", 20f); // default 20sp
+
+
     }
 }

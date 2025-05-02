@@ -245,8 +245,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if(id == R.id.nav_home){
                 Intent intent = new Intent(this, LanguageSelectionActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
+
                 return true;
             }
 
