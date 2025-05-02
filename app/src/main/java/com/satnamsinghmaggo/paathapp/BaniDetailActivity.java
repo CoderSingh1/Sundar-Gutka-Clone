@@ -88,7 +88,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
             initializeViews();
             applyFontSize();
             hidePlayerOnScroll();
-            FloatingActionButton bookmarkFab = findViewById(R.id.bookmarkFab);
+            ImageButton bookmarkFab = findViewById(R.id.bookmarkFab);
             SharedPreferences prefs = getSharedPreferences("BaniPrefs", MODE_PRIVATE);
             String baniTitle = getIntent().getStringExtra("bani_name");
             String bookmarkKey = baniTitle + "_scrollY";
@@ -108,14 +108,14 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
                 iconColor = Color.WHITE;                // White icon in light mode
             }
 
-            bookmarkFab.setBackgroundTintList(ColorStateList.valueOf(fabColor));
-            bookmarkFab.setImageTintList(ColorStateList.valueOf(iconColor));
+           // bookmarkFab.setBackgroundTintList(ColorStateList.valueOf(fabColor));
+          //  bookmarkFab.setImageTintList(ColorStateList.valueOf(iconColor));
 
 
             if (savedScroll != -1) {
-                bookmarkFab.setImageResource(R.drawable.ic_send); // icon for "Go to Bookmark"
+                bookmarkFab.setImageResource(R.drawable.jump_to_bookmark); // icon for "Go to Bookmark"
             } else {
-                bookmarkFab.setImageResource(R.drawable.ic_star); // icon for "Save Bookmark"
+                bookmarkFab.setImageResource(R.drawable.save_to_bookmark); // icon for "Save Bookmark"
             }
 
             bookmarkFab.setOnClickListener(v -> {
@@ -125,7 +125,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
                 if (storedScroll == -1) {
                     // Save new bookmark
                     prefs.edit().putInt(bookmarkKey, currentScroll).apply();
-                    bookmarkFab.setImageResource(R.drawable.ic_send);
+                    bookmarkFab.setImageResource(R.drawable.jump_to_bookmark);
                     Toast.makeText(this, "Bookmark saved!", Toast.LENGTH_SHORT).show();
                 } else {
                     // Go to saved bookmark
@@ -136,7 +136,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
 
             bookmarkFab.setOnLongClickListener(v -> {
                 prefs.edit().remove(bookmarkKey).apply();
-                bookmarkFab.setImageResource(R.drawable.ic_star);
+                bookmarkFab.setImageResource(R.drawable.save_to_bookmark);
                 Toast.makeText(this, "Bookmark cleared!", Toast.LENGTH_SHORT).show();
                 return true;
             });

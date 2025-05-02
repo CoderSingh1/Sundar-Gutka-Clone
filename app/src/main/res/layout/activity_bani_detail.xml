@@ -144,15 +144,16 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_skip_next" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <ImageButton
                 android:id="@+id/bookmarkFab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="40dp"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginStart="22dp"
+                android:scaleType="centerInside"
                 android:contentDescription="Bookmark"
-                app:backgroundTint="@color/fab_background"
-                app:tint="@color/fab_icon_tint" />
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/save_to_bookmark"/>
 
 
         </LinearLayout>
