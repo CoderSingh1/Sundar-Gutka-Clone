@@ -27,6 +27,8 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.widget.NestedScrollView;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -82,6 +84,41 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
             initializeViews();
             applyFontSize();
             hidePlayerOnScroll();
+            FloatingActionButton bookmarkFab = findViewById(R.id.bookmarkFab);
+            SharedPreferences prefs = getSharedPreferences("BaniPrefs", MODE_PRIVATE);
+            String baniTitle = getIntent().getStringExtra("bani_name");
+            String bookmarkKey = baniTitle + "_scrollY";
+            int savedScroll = prefs.getInt(bookmarkKey, -1);
+
+// Set icon based on whether a bookmark exists
+            if (savedScroll != -1) {
+                bookmarkFab.setImageResource(R.drawable.ic_send); // icon for "Go to Bookmark"
+            } else {
+                bookmarkFab.setImageResource(R.drawable.ic_star); // icon for "Save Bookmark"
+            }
+
+            bookmarkFab.setOnClickListener(v -> {
+                int currentScroll = scrollView.getScrollY();
+                int storedScroll = prefs.getInt(bookmarkKey, -1);
+
+                if (storedScroll == -1) {
+                    // Save new bookmark
+                    prefs.edit().putInt(bookmarkKey, currentScroll).apply();
+                    bookmarkFab.setImageResource(R.drawable.ic_send);
+                    Toast.makeText(this, "Bookmark saved!", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Go to saved bookmark
+                    scrollView.post(() -> scrollView.scrollTo(0, storedScroll));
+                    Toast.makeText(this, "Jumped to bookmark!", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            bookmarkFab.setOnLongClickListener(v -> {
+                prefs.edit().remove(bookmarkKey).apply();
+                bookmarkFab.setImageResource(R.drawable.ic_star);
+                Toast.makeText(this, "Bookmark cleared!", Toast.LENGTH_SHORT).show();
+                return true;
+            });
             initializeAudioSystem();
             setupBaniDetails();
             setupMediaPlayer();
