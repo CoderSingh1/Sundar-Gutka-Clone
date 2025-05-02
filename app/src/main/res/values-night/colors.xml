@@ -13,5 +13,6 @@
     <color name="bani_text_primary">@color/white</color>
     <color name="button_text_color">#FFFFFF</color>
     <color name="time_text_color">#FFFFFF</color> <!-- white -->
-
+    <color name="fab_background">#FFFFFF</color> <!-- White -->
+    <color name="fab_icon_tint">#FFFFFF</color>  <!-- White -->
 </resources>

@@ -4,6 +4,9 @@ package com.satnamsinghmaggo.paathapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.media.AudioFocusRequest;
 import android.media.AudioManager;
@@ -77,6 +80,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bani_detail);
 
+
         handler = new Handler(Looper.getMainLooper());
 
         try {
@@ -91,6 +95,23 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
             int savedScroll = prefs.getInt(bookmarkKey, -1);
 
 // Set icon based on whether a bookmark exists
+
+            int iconColor;
+            int fabColor;
+// Detect night mode
+            int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+                fabColor = Color.WHITE;       // White FAB in dark mode
+                iconColor = Color.BLACK;      // Black icon in dark mode
+            } else {
+                fabColor = Color.parseColor("#001F3F");  // Navy FAB in light mode
+                iconColor = Color.WHITE;                // White icon in light mode
+            }
+
+            bookmarkFab.setBackgroundTintList(ColorStateList.valueOf(fabColor));
+            bookmarkFab.setImageTintList(ColorStateList.valueOf(iconColor));
+
+
             if (savedScroll != -1) {
                 bookmarkFab.setImageResource(R.drawable.ic_send); // icon for "Go to Bookmark"
             } else {

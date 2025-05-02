@@ -22,4 +22,7 @@
     <color name="bani_text_primary">@color/navy</color>
     <color name="button_text_color">#000000</color>
     <color name="time_text_color">#000000</color> <!-- black -->
+    <color name="fab_background">#001F54</color> <!-- Navy -->
+    <color name="fab_icon_tint">#000000</color>  <!-- Black -->
+
 </resources>
