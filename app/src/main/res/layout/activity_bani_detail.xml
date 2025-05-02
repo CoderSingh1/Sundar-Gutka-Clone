@@ -140,7 +140,7 @@
                 android:id="@+id/btnNext"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:contentDescription="skip 5 seconds forward"
+                android:contentDescription="skip 5seconds forward"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_skip_next" />
 
@@ -154,7 +154,6 @@
                 android:contentDescription="Bookmark"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/baseline_bookmark_24"/>
-
 
         </LinearLayout>
     </LinearLayout>
