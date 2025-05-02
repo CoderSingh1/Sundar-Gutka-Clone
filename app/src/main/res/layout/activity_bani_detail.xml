@@ -146,14 +146,14 @@
 
             <ImageButton
                 android:id="@+id/bookmarkFab"
-                android:layout_width="48dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginStart="22dp"
                 android:scaleType="centerInside"
                 android:contentDescription="Bookmark"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/save_to_bookmark"/>
+                android:src="@drawable/baseline_bookmark_24"/>
 
 
         </LinearLayout>
