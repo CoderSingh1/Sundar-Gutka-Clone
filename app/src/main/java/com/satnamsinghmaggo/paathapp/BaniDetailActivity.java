@@ -109,13 +109,13 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
             }
 
            // bookmarkFab.setBackgroundTintList(ColorStateList.valueOf(fabColor));
-          //  bookmarkFab.setImageTintList(ColorStateList.valueOf(iconColor));
+             // bookmarkFab.setImageTintList(ColorStateList.valueOf(iconColor));
 
 
             if (savedScroll != -1) {
                 bookmarkFab.setImageResource(R.drawable.jump_to_bookmark); // icon for "Go to Bookmark"
             } else {
-                bookmarkFab.setImageResource(R.drawable.save_to_bookmark); // icon for "Save Bookmark"
+                bookmarkFab.setImageResource(R.drawable.baseline_bookmark_24); // icon for "Save Bookmark"
             }
 
             bookmarkFab.setOnClickListener(v -> {
@@ -136,7 +136,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
 
             bookmarkFab.setOnLongClickListener(v -> {
                 prefs.edit().remove(bookmarkKey).apply();
-                bookmarkFab.setImageResource(R.drawable.save_to_bookmark);
+                bookmarkFab.setImageResource(R.drawable.baseline_bookmark_24);
                 Toast.makeText(this, "Bookmark cleared!", Toast.LENGTH_SHORT).show();
                 return true;
             });
