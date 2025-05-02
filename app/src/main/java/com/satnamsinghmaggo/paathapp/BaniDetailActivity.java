@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 public class BaniDetailActivity extends AppCompatActivity implements AudioManager.OnAudioFocusChangeListener {
 
     private TextView tvBaniTitle, tvCurrentTime, tvTotalTime,BaniText;
-    private ImageButton btnPrevious, btnPlayPause, btnNext;
+    private ImageButton btnPrevious, btnPlayPause, btnNext,bookmarkFab;
     private SeekBar seekBar;
     private AudioManager audioManager;
     private AudioFocusRequest audioFocusRequest;
@@ -53,6 +53,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
     LinearLayout mediaControls,timeLayout,linearLayout;
 
     ConstraintLayout mainLayout;
+
 
     private static final int SKIP_DURATION = 5000;
     private static final String KEY_POSITION = "position";
@@ -88,58 +89,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
             initializeViews();
             applyFontSize();
             hidePlayerOnScroll();
-            ImageButton bookmarkFab = findViewById(R.id.bookmarkFab);
-            SharedPreferences prefs = getSharedPreferences("BaniPrefs", MODE_PRIVATE);
-            String baniTitle = getIntent().getStringExtra("bani_name");
-            String bookmarkKey = baniTitle + "_scrollY";
-            int savedScroll = prefs.getInt(bookmarkKey, -1);
-
-// Set icon based on whether a bookmark exists
-
-            int iconColor;
-            int fabColor;
-// Detect night mode
-            int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
-                fabColor = Color.WHITE;       // White FAB in dark mode
-                iconColor = Color.WHITE;      // Black icon in dark mode
-            } else {
-                fabColor = Color.parseColor("#001F3F");  // Navy FAB in light mode
-                iconColor = Color.BLACK;                // White icon in light mode
-            }
-
-           // bookmarkFab.setBackgroundTintList(ColorStateList.valueOf(fabColor));
-             bookmarkFab.setImageTintList(ColorStateList.valueOf(iconColor));
-
-
-            if (savedScroll != -1) {
-                bookmarkFab.setImageResource(R.drawable.jump_to_bookmark); // icon for "Go to Bookmark"
-            } else {
-                bookmarkFab.setImageResource(R.drawable.baseline_bookmark_24); // icon for "Save Bookmark"
-            }
-
-            bookmarkFab.setOnClickListener(v -> {
-                int currentScroll = scrollView.getScrollY();
-                int storedScroll = prefs.getInt(bookmarkKey, -1);
-
-                if (storedScroll == -1) {
-                    // Save new bookmark
-                    prefs.edit().putInt(bookmarkKey, currentScroll).apply();
-                    bookmarkFab.setImageResource(R.drawable.jump_to_bookmark);
-                    Toast.makeText(this, "Bookmark saved!", Toast.LENGTH_SHORT).show();
-                } else {
-                    // Go to saved bookmark
-                    scrollView.post(() -> scrollView.scrollTo(0, storedScroll));
-                    Toast.makeText(this, "Jumped to bookmark!", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            bookmarkFab.setOnLongClickListener(v -> {
-                prefs.edit().remove(bookmarkKey).apply();
-                bookmarkFab.setImageResource(R.drawable.baseline_bookmark_24);
-                Toast.makeText(this, "Bookmark cleared!", Toast.LENGTH_SHORT).show();
-                return true;
-            });
+            BookmarkApply();
             initializeAudioSystem();
             setupBaniDetails();
             setupMediaPlayer();
@@ -155,6 +105,53 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
             handleError("Error initializing: " + e.getMessage());
             finish();
         }
+    }
+
+    private void BookmarkApply(){
+        SharedPreferences prefs = getSharedPreferences("BaniPrefs", MODE_PRIVATE);
+        String baniTitle = getIntent().getStringExtra("bani_name");
+        String bookmarkKey = baniTitle + "_scrollY";
+        int savedScroll = prefs.getInt(bookmarkKey, -1);
+
+        int iconColor;
+// Detect night mode
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            iconColor = Color.WHITE;
+        } else {
+            iconColor = Color.BLACK;                // White icon in light mode
+        }
+        bookmarkFab.setImageTintList(ColorStateList.valueOf(iconColor));
+
+
+        if (savedScroll != -1) {
+            bookmarkFab.setImageResource(R.drawable.jump_to_bookmark); // icon for "Go to Bookmark"
+        } else {
+            bookmarkFab.setImageResource(R.drawable.baseline_bookmark_24); // icon for "Save Bookmark"
+        }
+
+        bookmarkFab.setOnClickListener(v -> {
+            int currentScroll = scrollView.getScrollY();
+            int storedScroll = prefs.getInt(bookmarkKey, -1);
+
+            if (storedScroll == -1) {
+                // Save new bookmark
+                prefs.edit().putInt(bookmarkKey, currentScroll).apply();
+                bookmarkFab.setImageResource(R.drawable.jump_to_bookmark);
+                Toast.makeText(this, "Bookmark saved!", Toast.LENGTH_SHORT).show();
+            } else {
+                // Go to saved bookmark
+                scrollView.post(() -> scrollView.scrollTo(0, storedScroll));
+                Toast.makeText(this, "Jumped to bookmark!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        bookmarkFab.setOnLongClickListener(v -> {
+            prefs.edit().remove(bookmarkKey).apply();
+            bookmarkFab.setImageResource(R.drawable.baseline_bookmark_24);
+            Toast.makeText(this, "Bookmark cleared!", Toast.LENGTH_SHORT).show();
+            return true;
+        });
     }
 
     private void hideControls() {
@@ -329,6 +326,7 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
         mainLayout = findViewById(R.id.mainLayout);
         timeLayout = findViewById(R.id.timeLayout);
         linearLayout = findViewById(R.id.linearLayout);
+        bookmarkFab = findViewById(R.id.bookmarkFab);
     }
 
     private void initializeAudioSystem() {
