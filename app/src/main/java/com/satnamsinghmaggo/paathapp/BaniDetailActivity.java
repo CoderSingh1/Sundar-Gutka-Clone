@@ -102,14 +102,14 @@ public class BaniDetailActivity extends AppCompatActivity implements AudioManage
             int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
             if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
                 fabColor = Color.WHITE;       // White FAB in dark mode
-                iconColor = Color.BLACK;      // Black icon in dark mode
+                iconColor = Color.WHITE;      // Black icon in dark mode
             } else {
                 fabColor = Color.parseColor("#001F3F");  // Navy FAB in light mode
-                iconColor = Color.WHITE;                // White icon in light mode
+                iconColor = Color.BLACK;                // White icon in light mode
             }
 
            // bookmarkFab.setBackgroundTintList(ColorStateList.valueOf(fabColor));
-             // bookmarkFab.setImageTintList(ColorStateList.valueOf(iconColor));
+             bookmarkFab.setImageTintList(ColorStateList.valueOf(iconColor));
 
 
             if (savedScroll != -1) {
