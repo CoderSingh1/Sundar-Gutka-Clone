@@ -63,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .edit()
                 .putString("selected_language", selectedLang)
                 .apply();
-        Toast.makeText(this, "Selected Language: " + selectedLang, Toast.LENGTH_SHORT).show();
-
         preferenceManager = BaniPreferenceManager.getInstance(this);
 
         initializeViews();
