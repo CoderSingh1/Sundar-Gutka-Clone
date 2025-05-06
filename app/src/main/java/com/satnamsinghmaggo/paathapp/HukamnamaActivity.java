@@ -50,7 +50,7 @@ import okhttp3.Response;
 
 public class HukamnamaActivity extends AppCompatActivity {
 
-    private static final String TAG = "Acitvity_HukamNama";
+
     private LottieAnimationView lottieLoader;
     private ImageView playButton, skipNext, skipPrev;
     private SeekBar seekBar;
