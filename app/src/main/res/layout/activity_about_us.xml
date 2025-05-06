@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:textStyle="bold"
+                android:textStyle="normal"
                 android:textColor="@color/bani_text_primary"
                 android:padding="8dp"
                 android:text="@string/Developers"/>
